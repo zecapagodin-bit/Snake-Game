@@ -35,6 +35,14 @@
             color:rgb(0, 0, 0);
         }
 
+        #canvas{
+            border: 3px solid #333;
+            border-radius: #f0f0f0;
+            display: block;
+
+            margin: 20px auto;
+        }
+
         </style>
 
     </head>
@@ -52,12 +60,13 @@
                 </div>
             </div>
 
-            <canvas> 
-        
+            <canvas id="canvas" width="400" height="400"> 
+        <!--E um elemento especial para desenho 2D ou 3D. Por so só,
+         é apenas um retangulo vazio. o JAVASCRIPT vai usar o "contexto 2D"
+          para desenhar a cobra, a comifa etc...-->
 
 
                 
-
 
             </canvas>
 
