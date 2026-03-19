@@ -92,13 +92,35 @@
 
             <div> 
 
-            <button onclick="alert('em construção')">Iniciar jogo</button>
-            <button>pausar / continuar</button>
+            <button onclick="iniciarJogo()">Iniciar jogo</button>
+            <button onclick="pausarJogo()" >Pausar / continuar</button>           
 
 
             </div>
 
-        </div>        
+            <div class="teclas">
+
+                 <div class="tecla vazia"></div>
+                 <div>&#9650;             </div>
+                 <div class="tecla vazia"></div>
+                 <div></div>
+                 <div></div>
+                 <div></div>
+
+            </div>
+
+            </div>     
+        
+            <script>
+
+            function iniciarJogo(){
+                console.log("Jogo começou!!!");
+            }
+
+            function pausarJogo(){
+                console.log("pausa no jogo!!!")
+            }
+        </script>
     </body>
 </html>
 
