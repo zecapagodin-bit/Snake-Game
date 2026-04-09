@@ -146,14 +146,16 @@ button {
     </div>
 
     <div class="teclas">
-        <div class="tecla vazia"></div>
-        <div class="tecla">▲</div>
-        <div class="tecla vazia"></div>
+					<div class="tecla vazia"></div>
 
-        <div class="tecla">◀</div>
-        <div class="tecla">▼</div>
-        <div class="tecla">▶</div>
-    </div>
+					<div class="tecla" onclick="change_dir('up')">&#9650;</div>
+
+					<div class="tecla vazia"></div>
+
+					<div class="tecla" onclick="change_dir('left')">&#9668;</div>
+					<div class="tecla" onclick="change_dir('down')">&#9660;</div>
+					<div class="tecla" onclick="change_dir('right')">&#9658;</div>
+				</div>
 
     <div class="instrucoes">
         <h3>Como Jogar:</h3>
@@ -164,6 +166,11 @@ button {
 </div>
 
 <script>
+
+function mudarDirecao(novaDirecao){
+    console.log(novaDirecao)
+}
+
 function init() {
     console.log("Jogo começou");
 }
