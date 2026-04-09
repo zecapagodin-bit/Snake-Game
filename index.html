@@ -1,195 +1,143 @@
-<DOCTYPE html>
+<!DOCTYPE html>
+	<html lang="pt-br">
 
-    <html lang="pt-br">
-        <head>
+		<head>
+			<meta charset="UTF-8">
+			<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-        <meta charset="UTF-8">
-        <meta name="vieweport" content="width=devide-width, initial-scale=1.0">
+			<title>Jogo da cobrinha</title>
 
-        <title>Jogo da Cobrinha</title>
+			<style>
+				.container {
+					text-align: center;
+					background-color: #F0F0F0FF;
+					padding: 30px;
+					border-radius: 20px;
+					box-shadow: 0px 10px 30px #000000FF;
+				}
 
-        <style>
+				.info {
+					font-size: 1em;
+				}
 
-        .container { 
-            <ShaderGradient
-  animate="on"
-  axesHelper="off"
-  brightness={0}
-  cAzimuthAngle={180}
-  cDistance={3}
-  cPolarAngle={90}
-  cameraZoom={4.8}
-  color1="#ba9f38"
-  color2="#1e3b29"
-  color3="#d0783b"
-  destination="onCanvas"
-  embedMode="off"
-  envPreset="lobby"
-  format="gif"
-  fov={45}
-  frameRate={10}
-  gizmoHelper="hide"
-  grain="on"
-  lightType="3d"
-  pixelDensity={1}
-  positionX={-1.4}
-  positionY={0}
-  positionZ={0}
-  range="disabled"
-  rangeEnd={40}
-  rangeStart={0}
-  reflection={0.1}
-  rotationX={0}
-  rotationY={10}
-  rotationZ={50}
-  shader="defaults"
-  type="plane"
-  uAmplitude={1}
-  uDensity={1.3}
-  uFrequency={5.5}
-  uSpeed={0.4}
-  uStrength={4}
-  uTime={0}
-  wireframe={false}
-/>
-        }
+				.pontuacao {
+					font-weight: bold;
+					color: #28A745;
+				}
 
-        .info { 
+				.recorde {
+					font-weight: bold;
+					color: #A72839;
+				}
 
-        font-size: 1em;
+				#canvas {
+					border: 3px solid #000000FF;
+					border-radius: 10px;
+					background-color: #FFFFFFFF;
+					display: block;
+					margin: 20px auto;
+					box-shadow: 0px 5px 15px #00000022
+				}
 
-        }
+				button {
+					font-size: 16px;
+					cursor: pointer;
+					background-color: #00FF00FF;
+					padding: 12px 25px;
+					color: #000000FF;
+					border: none;
+					border-radius: 8px;
+					margin: 5px;
+					transition: all 0.3s ease;
+				}
 
-        .pontuacao {
+				.teclas {
+					display: grid;
+					grid-template-columns: repeat(3, 50px);
+					gap: 5px;
+					justify-content:center;
+					margin: 15px auto;
+				}
 
-            font-weight:bold;
-            color:rgb(0, 0, 0);
-        }
+				.tecla {
+                    width: 50px;
+                    height: 50px;
+                    background-color: #000000FF;
+                    color: #FFFFFFFF;
+                    border: none;
+                    cusor: pointer;
+                    border-radius: 5px;
+                    font-size: 20px;
+                    diplay: flex;
+                    align-items: center;
+                    justify-content: center;
+                    font-weight: bold;
+				}
 
-        .recorde{
-            font-weight:bold;
-            color:rgb(0, 0, 0);
-        }
+				.tecla.vazia {
+                    background-color: #F0F0F0FF;
+                    cursor: default;
+				}
 
-        #canvas{
-            border: 3px solid #333;
-            border-radius: 10px;
-            background-color:#FDE3CF;
-            display: block;
+				.tecla:active {
+                    background-color: #FF0000FF;
+				}
+			</style>
+		</head>
 
-            margin: 20px auto;
-            box-shadow: 0px 0px 15px rgba(0,0,0,0.5);
-        }
+		<body>
+			<div class="container">
+				<h1>&#128013; Jogo da Cobrinha</h1>
 
-        .controles{
-            margin-top: 20px;
+				<div class="info">
+					<div class="pontuacao">
+						Pontuação: <span id="pontos"> 0 </span>
+					</div>
+					<div class="recorde">
+						Recorde: <span id="recorde"> 0 </span>
+					</div>
+				</div>
 
-        }
+				<canvas id="canvas" width="400" height="400">
+				</canvas>
 
-        button{
-            font-size: 16px;
-            cursor: pointer;
-            background-color: #d6a332;
+				<div>
+					<button onclick="init();"> Iniciar Jogo </button>
+					<button onclick="pause();"> Pausar / Continuar </button>
+				</div>
 
-            padding: 12px 25px;
-            color:#000000;
-            border: 3px black;
-            border-radius: 8px;
-            margin: 5px;
-            transition: all 0.3s ease;
-        }
+				<div class="teclas">
+					<div class="tecla vazia"></div>
 
-        .teclas{
-            display:grid;
-            grid-template-columns: repeat(3, 50px);
-            gap: 5px;
-            justify-content: center;
-            margin: 15px auto;
+					<div class="tecla">&#9650;</div>
 
-        }
+					<div class="tecla vazia"></div>
 
-        .tecla{
-            width: 50px;
-            height: 50px;
-            background-color: #000000;
-            color: white;
-            border: none;
-            cursor: pointer;
-            border-radius: 5px;
-            font-size: 20px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: bold;
-        }
+					<div class="tecla">&#9668;</div>
+					<div class="tecla">&#9660;</div>
+					<div class="tecla">&#9658;</div>
+			</div>
 
-        .tecla.vazia {
-            background-color: transparent;
-            cursor: default;
-        }
+            <div>
 
-        .tecla:active {
-            background-color:#b8860b;
-        }
+                    <h3>Como Jogar:</h3>
+                    <p>Use as teclas do teclado ou os botões acima para controlar a cobra<p>
+                    <p>Coma as maçãs vermelhas &#127822; para crescer e ganhar pontos</p>
+                    <p>Não bata nas paredes nem no próprio corpo</p>
 
-        </style>
+            <div>
 
-    </head>
-    <body>
-        <div class="container">
-            <h1> &#128013; Jogo da cobrinha</h1>
-            
-            <div class="info">
+			<script>
+				function init()
+				{
+					console.log("Jogo começou");
+				}
 
-                <div class="pontuacao">
-                    pontuação: 0 <span id="pontos"> (0) </span>
-                </div>
-                <div class="recorde">
-                    Recorde: 0   <span id="recorde"> (0) </span>
-                </div>
-            </div>
+				function pause()
+				{
+					console.log("Jogo pausou");
+				}
+			</script>
+		</body>
 
-            <canvas id="canvas" width="400" height="400"> 
-        <!--E um elemento especial para desenho 2D ou 3D. Por so só,
-         é apenas um retangulo vazio. o JAVASCRIPT vai usar o "contexto 2D"
-          para desenhar a cobra, a comifa etc...-->
-
-
-                
-
-            </canvas>
-
-            <div> 
-
-            <button onclick="iniciarJogo()">Iniciar jogo</button>
-            <button onclick="pausarJogo()" >Pausar / continuar</button>           
-
-
-            </div>
-
-            <div class="teclas">
-
-                 <div class="tecla vazia"></div>
-                 <div class="tecla">&#9650;             </div>
-                 <div class="tecla vazia"></div>
-                 <div class="tecla">&#9668;</div>
-                 <div class="tecla">&#9660;</div>
-                 <div class="tecla">&#9658;</div>
-
-            </div>
-
-            </div>     
-        
-            <script>
-
-            function iniciarJogo(){
-                console.log("Jogo começou!!!");
-            }
-
-            function pausarJogo(){
-                console.log("pausa no jogo!!!")
-            }
-        </script>
-    </body>
 </html>
-
