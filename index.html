@@ -3,182 +3,649 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-<title>Jogo da cobrinha</title>
-
+<title>Jogo da Cobrinha</title>
 <style>
 
+@import url('https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Bebas+Neue&display=swap');
+
+:root {
+  --c1: #849B5C;
+  --c2: #3C0061;
+  --c3: #BFFFC7;
+  --dark: #000000;
+  --light: #F0F0F0;
+  --green: #00FF87;
+  --purple: #7B2FBE;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
 body {
-    margin: 0;
-    font-family: Arial, sans-serif;
-    background: linear-gradient(135deg, #849B5C, #000000, #BFFFC7);
-    background-size: 400% 400%; 
-    animation: gradientMove 10s ease infinite;
-
+  min-height: 100vh;
+  font-family: 'Space Mono', monospace;
+  background: #000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  position: relative;
 }
 
-    @keyframes gradientMove {
-    0% {
-        background-position: 0% 50%;
-    }
-    50% {
-        background-position: 100% 50%;
-    }
-    100% {
-        background-position: 0% 50%;
-    }
+/* ── Shader-like animated background ── */
+.bg {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  overflow: hidden;
 }
 
-#h1{
-	color: #F0F0F0;
+.bg canvas {
+  width: 100%;
+  height: 100%;
+  display: block;
 }
 
+/* grain overlay */
+.bg::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.08'/%3E%3C/svg%3E");
+  pointer-events: none;
+  opacity: 0.35;
+  mix-blend-mode: overlay;
+}
+
+/* ── Main container ── */
 .container {
-    text-align: center;
-    background-color: #000000;
-    padding: 30px;
-    border-radius: 20px;
-    box-shadow: 0px 10px 30px #F0F0F0;
-    width: fit-content;
-    margin: 50px auto;
+  position: relative;
+  z-index: 10;
+  text-align: center;
+  background: rgba(0,0,0,0.72);
+  backdrop-filter: blur(18px) saturate(1.4);
+  -webkit-backdrop-filter: blur(18px) saturate(1.4);
+  padding: 32px 36px 28px;
+  border-radius: 24px;
+  border: 1px solid rgba(191,255,199,0.15);
+  box-shadow:
+    0 0 0 1px rgba(132,155,92,0.1),
+    0 8px 40px rgba(0,0,0,0.6),
+    0 0 80px rgba(60,0,97,0.35),
+    inset 0 1px 0 rgba(191,255,199,0.1);
+  width: fit-content;
+  max-width: 96vw;
 }
 
+h1 {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 3rem;
+  letter-spacing: 0.1em;
+  background: linear-gradient(135deg, var(--c3) 0%, var(--c1) 50%, var(--c3) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  margin-bottom: 20px;
+  text-shadow: none;
+  filter: drop-shadow(0 0 20px rgba(191,255,199,0.4));
+}
+
+/* ── Score board ── */
 .info {
-    font-size: 1em;
+  display: flex;
+  gap: 30px;
+  justify-content: center;
+  margin-bottom: 16px;
 }
 
-.pontuacao {
-    font-weight: bold;
-    color: #28A745;
+.score-box {
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 10px;
+  padding: 8px 20px;
+  font-size: 0.75rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.5);
 }
 
-.recorde {
-    font-weight: bold;
-    color: #A72839;
+.score-box span {
+  display: block;
+  font-size: 1.6rem;
+  font-family: 'Bebas Neue', sans-serif;
+  letter-spacing: 0.05em;
+  margin-top: 2px;
 }
 
+#pontos { color: var(--green); text-shadow: 0 0 12px rgba(0,255,135,0.5); }
+#recorde { color: #FF6B9D; text-shadow: 0 0 12px rgba(255,107,157,0.5); }
+
+/* ── Canvas ── */
 #canvas {
-    border: 3px solid #000;
-    border-radius: 10px;
-    background-color: #fff;
-    display: block;
-    margin: 20px auto;
-    box-shadow: 0px 5px 15px #00000022;
+  display: block;
+  margin: 0 auto 18px;
+  border-radius: 14px;
+  border: 1px solid rgba(191,255,199,0.2);
+  box-shadow:
+    0 0 40px rgba(60,0,97,0.5),
+    0 0 0 1px rgba(132,155,92,0.15),
+    inset 0 0 30px rgba(0,0,0,0.3);
+  max-width: 100%;
+}
+
+/* ── Buttons ── */
+.btns {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+  margin-bottom: 14px;
+  flex-wrap: wrap;
 }
 
 button {
-    font-size: 16px;
-    cursor: pointer;
-    background-color: #00FF00;
-    padding: 12px 25px;
-    color: #000;
-    border: none;
-    border-radius: 8px;
-    margin: 5px;
-    transition: all 0.3s ease;
+  font-family: 'Space Mono', monospace;
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  cursor: pointer;
+  background: linear-gradient(135deg, var(--c1), var(--green));
+  color: #000;
+  border: none;
+  border-radius: 8px;
+  padding: 11px 22px;
+  transition: all 0.2s ease;
+  position: relative;
+  overflow: hidden;
 }
 
+button::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, var(--c3), var(--c1));
+  opacity: 0;
+  transition: opacity 0.2s;
+}
+
+button:hover::before { opacity: 1; }
+button:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(132,155,92,0.4); }
+button:active { transform: translateY(0); }
+button span { position: relative; z-index: 1; }
+
+.btn-pause {
+  background: linear-gradient(135deg, var(--c2), var(--purple));
+  color: var(--light);
+}
+
+.btn-pause::before {
+  background: linear-gradient(135deg, #5B0091, var(--c2));
+}
+
+/* ── D-pad ── */
 .teclas {
-    display: grid;
-    grid-template-columns: repeat(3, 50px);
-    gap: 5px;
-    justify-content: center;
-    margin: 15px auto;
+  display: grid;
+  grid-template-columns: repeat(3, 48px);
+  gap: 6px;
+  justify-content: center;
+  margin: 0 auto 16px;
 }
 
 .tecla {
-    width: 50px;
-    height: 50px;
-    background-color: #000;
-    color: #fff;
-    border: none;
-    cursor: pointer;
-    border-radius: 5px;
-    font-size: 20px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-weight: bold;
+  width: 48px;
+  height: 48px;
+  background: rgba(191,255,199,0.08);
+  color: var(--c3);
+  border: 1px solid rgba(191,255,199,0.2);
+  cursor: pointer;
+  border-radius: 8px;
+  font-size: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  transition: all 0.15s ease;
+  user-select: none;
 }
 
-.vazia {
-    background-color: #000;
-    cursor: default;
-}
+.tecla:hover { background: rgba(191,255,199,0.18); border-color: var(--c3); }
+.tecla:active { background: rgba(191,255,199,0.35); transform: scale(0.93); }
+.vazia { visibility: hidden; pointer-events: none; }
 
-.tecla:active {
-    background-color: red;
-}
-
+/* ── Instructions ── */
 .instrucoes {
-    margin-top: 20px;
-    padding: 15px;
-    background-color: white;
-    border-radius: 10px;
-    font-size: 14px;
-    color: #555;
+  margin-top: 12px;
+  padding: 14px 18px;
+  background: rgba(255,255,255,0.03);
+  border-radius: 10px;
+  border: 1px solid rgba(255,255,255,0.06);
+  font-size: 0.72rem;
+  color: rgba(255,255,255,0.4);
+  line-height: 1.7;
+  letter-spacing: 0.03em;
 }
 
-@media (max-width: 600px){
-    h1 {
-        font-size: 1.8em;
-    }
+.instrucoes h3 {
+  color: var(--c3);
+  font-size: 0.75rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  margin-bottom: 6px;
+  opacity: 0.8;
+}
+
+/* ── Game over overlay on canvas ── */
+.overlay {
+  display: none;
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  color: #fff;
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 2.5rem;
+  letter-spacing: 0.1em;
+  text-shadow: 0 0 20px rgba(255,107,157,0.8);
+}
+
+.canvas-wrap {
+  position: relative;
+  display: inline-block;
+  margin-bottom: 4px;
+}
+
+@media (max-width: 500px) {
+  .container { padding: 20px 14px 18px; }
+  h1 { font-size: 2.2rem; }
+  #canvas { width: 300px !important; height: 300px !important; }
 }
 
 </style>
 </head>
-
 <body>
 
+<!-- Animated water-plane shader background -->
+<div class="bg">
+  <canvas id="bgCanvas"></canvas>
+</div>
+
 <div class="container">
-    <h1>🐍 Jogo da Cobrinha</h1>
+  <h1>🐍 Jogo da Cobrinha</h1>
 
-    <div class="info">
-        <div class="pontuacao">
-            Pontuação: <span id="pontos">0</span>
-        </div>
-        <div class="recorde">
-            Recorde: <span id="recorde">0</span>
-        </div>
+  <div class="info">
+    <div class="score-box">
+      Pontuação
+      <span id="pontos">0</span>
     </div>
+    <div class="score-box">
+      Recorde
+      <span id="recorde">0</span>
+    </div>
+  </div>
 
+  <div class="canvas-wrap">
     <canvas id="canvas" width="400" height="400"></canvas>
+  </div>
 
-    <div>
-        <button onclick="init()">Iniciar Jogo</button>
-        <button onclick="pauseGame()">Pausar / Continuar</button>
-    </div>
+  <div class="btns">
+    <button onclick="init()"><span>▶ Iniciar</span></button>
+    <button class="btn-pause" onclick="pauseGame()"><span>⏸ Pausar / Continuar</span></button>
+  </div>
 
-    <div class="teclas">
-					<div class="vazia"></div>
-					<div class="tecla" onclick="mudarDirecao('cima')">&#9650;</div>
-					<div class="vazia"></div>
-					<div class="tecla" onclick="mudarDirecao('esquerda')">&#9668;</div>
-					<div class="tecla" onclick="mudarDirecao('baixo')">&#9660;</div>
-					<div class="tecla" onclick="mudarDirecao('direita')">&#9658;</div>
-				</div>
+  <div class="teclas">
+    <div class="vazia"></div>
+    <div class="tecla" onclick="mudarDirecao('cima')">▲</div>
+    <div class="vazia"></div>
+    <div class="tecla" onclick="mudarDirecao('esquerda')">◀</div>
+    <div class="tecla" onclick="mudarDirecao('baixo')">▼</div>
+    <div class="tecla" onclick="mudarDirecao('direita')">▶</div>
+  </div>
 
-    <div class="instrucoes">
-        <h3>Como Jogar:</h3>
-        <p>Use as teclas do teclado ou os botões acima para controlar a cobra</p>
-        <p>Coma as maçãs 🍎 para crescer e ganhar pontos</p>
-        <p>Não bata nas paredes nem no próprio corpo</p>
-    </div>
+  <div class="instrucoes">
+    <h3>Como Jogar</h3>
+    Use as setas do teclado ou os botões acima para controlar a cobra<br>
+    Coma as maçãs 🍎 para crescer e ganhar pontos<br>
+    Não bata nas paredes nem no próprio corpo
+  </div>
 </div>
 
 <script>
+/* ═══════════════════════════════════════════
+   SHADER-LIKE BACKGROUND  (waterPlane sim)
+   Colors: #849B5C · #3C0061 · #BFFFC7
+   ═══════════════════════════════════════════ */
+(function() {
+  const bg = document.getElementById('bgCanvas');
+  const ctx = bg.getContext('2d');
+  let t = 0;
 
-function mudarDirecao(novaDirecao){
-    console.log(novaDirecao)
-}
+  function resize() {
+    bg.width  = window.innerWidth;
+    bg.height = window.innerHeight;
+  }
+  window.addEventListener('resize', resize);
+  resize();
 
+  // Parse hex to rgb
+  function hex(h) {
+    const n = parseInt(h.slice(1), 16);
+    return [(n>>16)&255, (n>>8)&255, n&255];
+  }
+
+  const C1 = hex('#849B5C');
+  const C2 = hex('#3C0061');
+  const C3 = hex('#BFFFC7');
+
+  function lerp3(a, b, x) {
+    return [
+      a[0] + (b[0]-a[0])*x,
+      a[1] + (b[1]-a[1])*x,
+      a[2] + (b[2]-a[2])*x
+    ];
+  }
+
+  function sample(nx, ny, t) {
+    // waterPlane-like: layered sinusoids
+    const uFreq = 5.5, uAmp = 1, uSpeed = 0.4, uStr = 4;
+    const uDensity = 1.3;
+
+    let wave  = Math.sin(nx * uFreq + t * uSpeed)
+              * Math.cos(ny * uFreq * uDensity + t * uSpeed * 0.7)
+              * uAmp;
+    wave     += Math.sin((nx + ny) * uFreq * 0.5 + t * uSpeed * 1.3) * 0.5;
+    wave     += Math.cos(nx * uFreq * 1.7 - ny * uFreq + t * uSpeed * 0.9) * 0.3;
+
+    // Normalize roughly to [0,1]
+    let v = (wave / uStr) * 0.5 + 0.5;
+    v = Math.max(0, Math.min(1, v));
+
+    // Blend three colours
+    let col;
+    if (v < 0.5) {
+      col = lerp3(C2, C1, v * 2);
+    } else {
+      col = lerp3(C1, C3, (v - 0.5) * 2);
+    }
+    return col;
+  }
+
+  // Render at reduced resolution for perf, then scale
+  const RES = 4; // pixel block size
+
+  function draw() {
+    const W = bg.width, H = bg.height;
+    const cols = Math.ceil(W / RES);
+    const rows = Math.ceil(H / RES);
+
+    for (let r = 0; r < rows; r++) {
+      for (let c = 0; c < cols; c++) {
+        const nx = (c / cols) * 2 - 1 + Math.sin(t*0.1) * 0.3;
+        const ny = (r / rows) * 2 - 1 + Math.cos(t*0.08) * 0.2;
+        const [R, G, B] = sample(nx, ny, t);
+        ctx.fillStyle = `rgb(${R|0},${G|0},${B|0})`;
+        ctx.fillRect(c * RES, r * RES, RES, RES);
+      }
+    }
+    t += 0.05;
+    requestAnimationFrame(draw);
+  }
+  draw();
+})();
+
+
+/* ═══════════════════════════════════════════
+   SNAKE GAME
+   ═══════════════════════════════════════════ */
+const canvas  = document.getElementById('canvas');
+const ctx2    = canvas.getContext('2d');
+const CELL    = 20;
+const COLS    = canvas.width  / CELL;
+const ROWS    = canvas.height / CELL;
+
+let cobra, direcao, proximaDirecao, comida, pontos, recorde = 0;
+let gameLoop  = null;
+let pausado   = false;
+let rodando   = false;
+
+/* ── Init ── */
 function init() {
-    console.log("Jogo começou");
+  clearInterval(gameLoop);
+  pausado  = false;
+  rodando  = true;
+  cobra    = [{x:10, y:10}, {x:9,y:10}, {x:8,y:10}];
+  direcao  = {x:1, y:0};
+  proximaDirecao = {x:1, y:0};
+  pontos   = 0;
+  atualizarPontos();
+  gerarComida();
+  gameLoop = setInterval(update, 120);
 }
 
+/* ── Pause ── */
 function pauseGame() {
-    console.log("Jogo pausou");
+  if (!rodando) return;
+  if (pausado) {
+    pausado  = false;
+    gameLoop = setInterval(update, 120);
+  } else {
+    pausado = true;
+    clearInterval(gameLoop);
+    desenharPausa();
+  }
 }
+
+/* ── Direction ── */
+function mudarDirecao(dir) {
+  const mapa = {
+    cima:    {x:0, y:-1},
+    baixo:   {x:0, y:1},
+    esquerda:{x:-1, y:0},
+    direita: {x:1, y:0}
+  };
+  const nd = mapa[dir];
+  if (!nd) return;
+  // prevent 180°
+  if (nd.x === -direcao.x && nd.y === -direcao.y) return;
+  proximaDirecao = nd;
+}
+
+document.addEventListener('keydown', e => {
+  const mapa = {
+    ArrowUp:'cima', ArrowDown:'baixo',
+    ArrowLeft:'esquerda', ArrowRight:'direita'
+  };
+  if (mapa[e.key]) { e.preventDefault(); mudarDirecao(mapa[e.key]); }
+});
+
+/* ── Food ── */
+function gerarComida() {
+  let pos;
+  do {
+    pos = {
+      x: Math.floor(Math.random() * COLS),
+      y: Math.floor(Math.random() * ROWS)
+    };
+  } while (cobra.some(s => s.x === pos.x && s.y === pos.y));
+  comida = pos;
+}
+
+/* ── Score ── */
+function atualizarPontos() {
+  document.getElementById('pontos').textContent = pontos;
+  if (pontos > recorde) {
+    recorde = pontos;
+    document.getElementById('recorde').textContent = recorde;
+  }
+}
+
+/* ── Update ── */
+function update() {
+  direcao = {...proximaDirecao};
+  const cab = {
+    x: (cobra[0].x + direcao.x + COLS) % COLS,
+    y: (cobra[0].y + direcao.y + ROWS) % ROWS
+  };
+
+  // Wall collision (no wrap: game over)
+  if (
+    cobra[0].x + direcao.x < 0 ||
+    cobra[0].x + direcao.x >= COLS ||
+    cobra[0].y + direcao.y < 0 ||
+    cobra[0].y + direcao.y >= ROWS
+  ) {
+    fimDeJogo(); return;
+  }
+
+  const novaHead = {
+    x: cobra[0].x + direcao.x,
+    y: cobra[0].y + direcao.y
+  };
+
+  // Self collision
+  if (cobra.some(s => s.x === novaHead.x && s.y === novaHead.y)) {
+    fimDeJogo(); return;
+  }
+
+  cobra.unshift(novaHead);
+
+  if (novaHead.x === comida.x && novaHead.y === comida.y) {
+    pontos += 10;
+    atualizarPontos();
+    gerarComida();
+  } else {
+    cobra.pop();
+  }
+
+  desenhar();
+}
+
+/* ── Draw ── */
+function desenhar() {
+  // Background
+  ctx2.fillStyle = '#080810';
+  ctx2.fillRect(0, 0, canvas.width, canvas.height);
+
+  // Grid (subtle)
+  ctx2.strokeStyle = 'rgba(191,255,199,0.04)';
+  ctx2.lineWidth = 0.5;
+  for (let i = 0; i <= COLS; i++) {
+    ctx2.beginPath();
+    ctx2.moveTo(i*CELL, 0);
+    ctx2.lineTo(i*CELL, canvas.height);
+    ctx2.stroke();
+  }
+  for (let j = 0; j <= ROWS; j++) {
+    ctx2.beginPath();
+    ctx2.moveTo(0, j*CELL);
+    ctx2.lineTo(canvas.width, j*CELL);
+    ctx2.stroke();
+  }
+
+  // Snake
+  cobra.forEach((seg, i) => {
+    const t = i / cobra.length;
+    // gradient from bright green head to deep purple tail
+    const r = Math.round(0   + t * 60);
+    const g = Math.round(255 + t * (155-255));
+    const b = Math.round(135 + t * (97-135));
+
+    const x = seg.x * CELL + 1;
+    const y = seg.y * CELL + 1;
+    const s = CELL - 2;
+    const radius = i === 0 ? 6 : 4;
+
+    ctx2.fillStyle = `rgb(${r},${g},${b})`;
+    roundRect(ctx2, x, y, s, s, radius);
+    ctx2.fill();
+
+    // Glow on head
+    if (i === 0) {
+      ctx2.shadowColor = 'rgba(0,255,135,0.8)';
+      ctx2.shadowBlur = 12;
+      roundRect(ctx2, x, y, s, s, radius);
+      ctx2.fill();
+      ctx2.shadowBlur = 0;
+
+      // Eyes
+      ctx2.fillStyle = '#000';
+      const ex = seg.x * CELL + CELL/2 + direcao.x * 4;
+      const ey = seg.y * CELL + CELL/2 + direcao.y * 4;
+      const perp = {x: direcao.y, y: -direcao.x};
+      ctx2.beginPath(); ctx2.arc(ex + perp.x*3, ey + perp.y*3, 2, 0, Math.PI*2); ctx2.fill();
+      ctx2.beginPath(); ctx2.arc(ex - perp.x*3, ey - perp.y*3, 2, 0, Math.PI*2); ctx2.fill();
+    }
+  });
+
+  // Food
+  const fx = comida.x * CELL + CELL/2;
+  const fy = comida.y * CELL + CELL/2;
+  ctx2.shadowColor = 'rgba(255,80,80,0.8)';
+  ctx2.shadowBlur = 14;
+  ctx2.font = `${CELL - 2}px serif`;
+  ctx2.textAlign = 'center';
+  ctx2.textBaseline = 'middle';
+  ctx2.fillText('🍎', fx, fy);
+  ctx2.shadowBlur = 0;
+}
+
+function roundRect(c, x, y, w, h, r) {
+  c.beginPath();
+  c.moveTo(x+r, y);
+  c.lineTo(x+w-r, y);
+  c.arcTo(x+w, y, x+w, y+r, r);
+  c.lineTo(x+w, y+h-r);
+  c.arcTo(x+w, y+h, x+w-r, y+h, r);
+  c.lineTo(x+r, y+h);
+  c.arcTo(x, y+h, x, y+h-r, r);
+  c.lineTo(x, y+r);
+  c.arcTo(x, y, x+r, y, r);
+  c.closePath();
+}
+
+function desenharPausa() {
+  ctx2.fillStyle = 'rgba(0,0,0,0.55)';
+  ctx2.fillRect(0, 0, canvas.width, canvas.height);
+  ctx2.fillStyle = '#BFFFC7';
+  ctx2.font = "bold 36px 'Bebas Neue', sans-serif";
+  ctx2.textAlign = 'center';
+  ctx2.textBaseline = 'middle';
+  ctx2.shadowColor = 'rgba(191,255,199,0.6)';
+  ctx2.shadowBlur = 20;
+  ctx2.fillText('PAUSADO', canvas.width/2, canvas.height/2);
+  ctx2.shadowBlur = 0;
+}
+
+function fimDeJogo() {
+  clearInterval(gameLoop);
+  rodando = false;
+
+  // Dramatic flash
+  ctx2.fillStyle = 'rgba(0,0,0,0.65)';
+  ctx2.fillRect(0, 0, canvas.width, canvas.height);
+
+  ctx2.textAlign = 'center';
+  ctx2.textBaseline = 'middle';
+  ctx2.shadowColor = 'rgba(255,107,157,0.9)';
+  ctx2.shadowBlur = 30;
+  ctx2.fillStyle = '#FF6B9D';
+  ctx2.font = "bold 48px 'Bebas Neue', sans-serif";
+  ctx2.fillText('FIM DE JOGO', canvas.width/2, canvas.height/2 - 20);
+  ctx2.shadowBlur = 0;
+
+  ctx2.fillStyle = 'rgba(191,255,199,0.75)';
+  ctx2.font = "16px 'Space Mono', monospace";
+  ctx2.fillText(`Pontuação: ${pontos}`, canvas.width/2, canvas.height/2 + 28);
+}
+
+// Initial screen
+ctx2.fillStyle = '#080810';
+ctx2.fillRect(0, 0, canvas.width, canvas.height);
+ctx2.fillStyle = 'rgba(191,255,199,0.5)';
+ctx2.font = "20px 'Bebas Neue', cursive";
+ctx2.textAlign = 'center';
+ctx2.textBaseline = 'middle';
+ctx2.fillText('Pressione ▶ INICIAR para jogar', canvas.width/2, canvas.height/2);
 </script>
 
 </body>
