@@ -1,167 +1,162 @@
 <!DOCTYPE html>
-	<html lang="pt-br">
+<html lang="pt-br">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-		<head>
-			<meta charset="UTF-8">
-			<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Jogo da cobrinha</title>
 
-			<title>Jogo da cobrinha</title>
+<style>
 
-			<style>
-				.container {
-					text-align: center;
-					background-color: #F0F0F0FF;
-					padding: 30px;
-					border-radius: 20px;
-					box-shadow: 0px 10px 30px #000000FF;
-				}
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background: linear-gradient(135deg, #849B5C, #000000, #BFFFC7);
+}
 
-				.info {
-					font-size: 1em;
-				}
+.container {
+    text-align: center;
+    background-color: #F0F0F0;
+    padding: 30px;
+    border-radius: 20px;
+    box-shadow: 0px 10px 30px #000000;
+    width: fit-content;
+    margin: 50px auto;
+}
 
-				.pontuacao {
-					font-weight: bold;
-					color: #28A745;
-				}
+.info {
+    font-size: 1em;
+}
 
-				.recorde {
-					font-weight: bold;
-					color: #A72839;
-				}
+.pontuacao {
+    font-weight: bold;
+    color: #28A745;
+}
 
-				#canvas {
-					border: 3px solid #000000FF;
-					border-radius: 10px;
-					background-color: #FFFFFFFF;
-					display: block;
-					margin: 20px auto;
-					box-shadow: 0px 5px 15px #00000022
-				}
+.recorde {
+    font-weight: bold;
+    color: #A72839;
+}
 
-				button {
-					font-size: 16px;
-					cursor: pointer;
-					background-color: #00FF00FF;
-					padding: 12px 25px;
-					color: #000000FF;
-					border: none;
-					border-radius: 8px;
-					margin: 5px;
-					transition: all 0.3s ease;
-				}
+#canvas {
+    border: 3px solid #000;
+    border-radius: 10px;
+    background-color: #fff;
+    display: block;
+    margin: 20px auto;
+    box-shadow: 0px 5px 15px #00000022;
+}
 
-				.teclas {
-					display: grid;
-					grid-template-columns: repeat(3, 50px);
-					gap: 5px;
-					justify-content:center;
-					margin: 15px auto;
-				}
+button {
+    font-size: 16px;
+    cursor: pointer;
+    background-color: #00FF00;
+    padding: 12px 25px;
+    color: #000;
+    border: none;
+    border-radius: 8px;
+    margin: 5px;
+    transition: all 0.3s ease;
+}
 
-				.tecla {
-                    width: 50px;
-                    height: 50px;
-                    background-color: #000000FF;
-                    color: #FFFFFFFF;
-                    border: none;
-                    cusor: pointer;
-                    border-radius: 5px;
-                    font-size: 20px;
-                    diplay: flex;
-                    align-items: center;
-                    justify-content: center;
-                    font-weight: bold;
-				}
+.teclas {
+    display: grid;
+    grid-template-columns: repeat(3, 50px);
+    gap: 5px;
+    justify-content: center;
+    margin: 15px auto;
+}
 
-				.tecla.vazia {
-                    background-color: #F0F0F0FF;
-                    cursor: default;
-				}
+.tecla {
+    width: 50px;
+    height: 50px;
+    background-color: #000;
+    color: #fff;
+    border: none;
+    cursor: pointer;
+    border-radius: 5px;
+    font-size: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+}
 
-				.tecla:active {
-                    background-color: #FF0000FF;
-				}
+.tecla.vazia {
+    background-color: #F0F0F0;
+    cursor: default;
+}
 
-				.instrucoes{
-					margin-top: 20px;
-					padding: 15px;
-					background-color: white;
-					border-radius: 10px;
-					font-size: 14px;
-					color: #555;
-				}
+.tecla:active {
+    background-color: red;
+}
 
-				.instrucoes h3{
-					margin-bottom: 10px;
-					color: #555;
-				}
+.instrucoes {
+    margin-top: 20px;
+    padding: 15px;
+    background-color: white;
+    border-radius: 10px;
+    font-size: 14px;
+    color: #555;
+}
 
-				@media (max-width: 600px){
-					h1{
-						font-size: 1.8em;
-					}
-					.info{
-						font-size: 1em;
-					}
-				}
-				
-			</style>
-		</head>
+@media (max-width: 600px){
+    h1 {
+        font-size: 1.8em;
+    }
+}
 
-		<body>
-			<div class="container">
-				<h1>&#128013; Jogo da Cobrinha</h1>
+</style>
+</head>
 
-				<div class="info">
-					<div class="pontuacao">
-						Pontuação: <span id="pontos"> 0 </span>
-					</div>
-					<div class="recorde">
-						Recorde: <span id="recorde"> 0 </span>
-					</div>
-				</div>
+<body>
 
-				<canvas id="canvas" width="400" height="400">
-				</canvas>
+<div class="container">
+    <h1>🐍 Jogo da Cobrinha</h1>
 
-				<div>
-					<button onclick="init();"> Iniciar Jogo </button>
-					<button onclick="pause();"> Pausar / Continuar </button>
-				</div>
+    <div class="info">
+        <div class="pontuacao">
+            Pontuação: <span id="pontos">0</span>
+        </div>
+        <div class="recorde">
+            Recorde: <span id="recorde">0</span>
+        </div>
+    </div>
 
-				<div class="teclas">
-					<div class="tecla vazia"></div>
+    <canvas id="canvas" width="400" height="400"></canvas>
 
-					<div class="tecla">&#9650;</div>
+    <div>
+        <button onclick="init()">Iniciar Jogo</button>
+        <button onclick="pauseGame()">Pausar / Continuar</button>
+    </div>
 
-					<div class="tecla vazia"></div>
+    <div class="teclas">
+        <div class="tecla vazia"></div>
+        <div class="tecla">▲</div>
+        <div class="tecla vazia"></div>
 
-					<div class="tecla">&#9668;</div>
-					<div class="tecla">&#9660;</div>
-					<div class="tecla">&#9658;</div>
-			</div>
+        <div class="tecla">◀</div>
+        <div class="tecla">▼</div>
+        <div class="tecla">▶</div>
+    </div>
 
-            <div>
+    <div class="instrucoes">
+        <h3>Como Jogar:</h3>
+        <p>Use as teclas do teclado ou os botões acima para controlar a cobra</p>
+        <p>Coma as maçãs 🍎 para crescer e ganhar pontos</p>
+        <p>Não bata nas paredes nem no próprio corpo</p>
+    </div>
+</div>
 
-                    <h3>Como Jogar:</h3>
-                    <p>Use as teclas do teclado ou os botões acima para controlar a cobra<p>
-                    <p>Coma as maçãs vermelhas &#127822; para crescer e ganhar pontos</p>
-                    <p>Não bata nas paredes nem no próprio corpo</p>
+<script>
+function init() {
+    console.log("Jogo começou");
+}
 
-            <div>
+function pauseGame() {
+    console.log("Jogo pausou");
+}
+</script>
 
-			<script>
-				function init()
-				{
-					console.log("Jogo começou");
-				}
-
-				function pause()
-				{
-					console.log("Jogo pausou");
-				}
-			</script>
-		</body>
-
+</body>
 </html>
