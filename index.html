@@ -237,9 +237,35 @@
                 jogoPausado = false;
 
                 document.getElementById ('pontos').textContent = pontos;
-
+                
+                gerarComida();
 
             }
+
+            //==============================
+            //Função para gerar comida
+            //==============================
+
+                 function gerarComida(){
+                    let posicaovalida = false
+                    while(!posicaovalida){
+                        comida = {
+                            x : Math.floor(Math.random() * quantidadeQuadrados),
+                            y : Math.floor(Math.random() * quantidadeQuadrados)
+                        }
+
+                        //verificar se a comida não está em cima da cobra
+                        posicaovalida = true;
+
+                        for(let pedaco of cobra){
+
+                            if(comida.x === pedaco.x && comida.y === pedaco.y){
+                                posicaovalida = false;
+                                break;
+                            }
+                        }
+                     }
+                  }
 
             function mudarDirecao(novaDirecao){
                 console.log(novaDirecao)
