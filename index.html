@@ -240,6 +240,12 @@
                 
                 gerarComida();
 
+            //Limpar o intervalo anterior se existir
+
+                if(intervaloJogo){
+                    clearInterval(intervaloJogo);
+                }
+
 
             //======================================================
             //Executa a função atualizarJogo a cada 100 milisegundos
@@ -255,12 +261,37 @@
             //===============================
 
                 function atualizarJogo(){
-                    console.log('atualizou!!!')
+                    if(!jogoAtivo || jogoPausado){
+                        return;
+                    }
+
+                    direcao = proximaDirecao;
+
+                    let cabeca = {...cobra[0]}
+
+                
+
+                        //mover a cabeça na direção atual
+                    desenhar();
                 }
+
+                function desenhar(){
+                    //limpar o fundo do canvas
+                    ctx.fillStyle = '#f0f0f0';
+                    ctx.fillRect(0, 0, canvas.width, canvas.height)
+
+                    //desenhar a grade (opcional, para visualizção)
+                    ctx.strokeStyle = '#e0e0e';
+                    ctx.lineWidth = 0.5;
+                }
+
+            
 
             //==============================
             //Função para gerar comida
             //==============================
+               
+
 
                  function gerarComida(){
                     let posicaovalida = false
@@ -284,7 +315,8 @@
                   }
 
             function mudarDirecao(novaDirecao){
-                console.log(novaDirecao)
+                //bem aqui vai aparecer um bug
+                proximaDirecao = novaDirecao;
             }
             
             function pausarJogo(){
