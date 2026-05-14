@@ -162,10 +162,11 @@
                 -->
 
             </canvas>
+
             <div  class="controles">
                 
-                <button onclick="iniciarJogo();">Iniciar Jogo</button>
-                <button onclick="pause();">pausar / continuar</button>
+                <button onclick="iniciarJogo()">Iniciar Jogo</button>
+                <button onclick="pausarJogo()">Pausar / Continuar</button>
 
             </div>
 
@@ -236,85 +237,76 @@
                 jogoAtivo = true;
                 jogoPausado = false;
 
-                document.getElementById ('pontos').textContent = pontos;
-                
+                document.getElementById('pontos').textContent = pontos;
+
                 gerarComida();
 
-            //Limpar o intervalo anterior se existir
-
+                //Limpar o intervalo anterior se existir
                 if(intervaloJogo){
                     clearInterval(intervaloJogo);
                 }
 
-
-            //======================================================
-            //Executa a função atualizarJogo a cada 100 milisegundos
-            //======================================================
-
-
+                //executa a função atualizarJogo a cada 100 milisegundos
                 intervaloJogo = setInterval(atualizarJogo, 100);
-
             }
-            
-            //===============================
-            //FUNÇÃO PRINCIPAL DO JOGO (LOOP)
-            //===============================
 
-                function atualizarJogo(){
-                    if(!jogoAtivo || jogoPausado){
-                        return;
+
+            //===================================
+            // FUNÇÃO PRINCIPAL DO JOGO ( LOOP )
+            //===================================
+            function atualizarJogo(){
+               if(!jogoAtivo || jogoPausado){
+                    return;
+               }
+
+               direcao = proximaDirecao;
+                
+               let cabeca = {...cobra[0]} 
+
+               //Mover a cabeça na direção atual
+               
+               desenhar();                
+            }
+
+            //=============================
+            //FUNÇÃO PARA DESENHAR OS ELEMENTOS VISUAIS DO JOGO
+            //=============================
+            function desenhar(){
+                //Limpar o fundo do Canvas
+                ctx.fillStyle = '#000000';
+                ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+                //Desenhar a grade (opcional, para visualização)
+                ctx.strokeStyle = '#e0e0e0';
+                ctx.lineWidth = 0.5;
+
+                ctx.fill();
+            }
+
+            //=============================
+            //====FUNÇÃO PARA GERAR COMIDA
+            //=============================
+            function gerarComida(){
+                let posicaoValida = false;
+
+                while(!posicaoValida){
+                    //gera uma posição aleatória para a comida
+                    comida = {
+                        x : Math.floor(Math.random() * quantidadeQuadrados),
+                        y : Math.floor(Math.random() * quantidadeQuadrados)
                     }
 
-                    direcao = proximaDirecao;
-
-                    let cabeca = {...cobra[0]}
-
-                
-
-                        //mover a cabeça na direção atual
-                    desenhar();
-                }
-
-                function desenhar(){
-                    //limpar o fundo do canvas
-                    ctx.fillStyle = '#000000';
-                    ctx.fillRect(0, 0, canvas.width, canvas.height)
-
-                    //desenhar a grade (opcional, para visualizção)
-                    ctx.strokeStyle = '#e0e0e';
-                    ctx.lineWidth = 0.5;
-
-                    ctx.fill();
-                }
-
-            
-
-            //==============================
-            //Função para gerar comida
-            //==============================
-               
-
-
-                 function gerarComida(){
-                    let posicaovalida = false
-                    while(!posicaovalida){
-                        comida = {
-                            x : Math.floor(Math.random() * quantidadeQuadrados),
-                            y : Math.floor(Math.random() * quantidadeQuadrados)
+                    //verificar se a comida não está em cima da cobra
+                    posicaoValida = true;
+                    
+                    for(let pedaco of cobra){
+                        if(comida.x === pedaco.x && comida.y === pedaco.y ){
+                            posicaoValida = false;
+                            break;
                         }
-
-                        //verificar se a comida não está em cima da cobra
-                        posicaovalida = true;
-
-                        for(let pedaco of cobra){
-
-                            if(comida.x === pedaco.x && comida.y === pedaco.y){
-                                posicaovalida = false;
-                                break;
-                            }
-                        }
-                     }
-                  }
+                    }
+                }
+            }
 
             function mudarDirecao(novaDirecao){
                 //bem aqui vai aparecer um bug
