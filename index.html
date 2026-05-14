@@ -27,7 +27,7 @@
 
             .container {
               text-align: center;  
-              background-color: white;
+              background-color: #A98B76;
               padding: 30px;
               border-radius: 20px;
               box-shadow: 0px 10px 30px black;
@@ -272,18 +272,18 @@
             //FUNÇÃO PARA DESENHAR OS ELEMENTOS VISUAIS DO JOGO
             //=============================
             function desenhar(){
-                // PASSO 1
-                //Limpar o fundo do Canvas
-                ctx.fillStyle = '#f0f0f0';
-                ctx.fillRect(0, 0, canvas.width, canvas.height);
+                    // PASSO 1
+                    //Limpar o fundo do Canvas
+                    ctx.fillStyle = '#f0f0f0';
+                    ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-                // PASSO 2
-                // Desenhar a grade (linhas de referencia)
+                    // PASSO 2
+                    // Desenhar a grade (linhas de referencia)
 
-                ctx.strokeStyle = '#000000';
-                ctx.lineWidth = 0.5;
+                    ctx.strokeStyle = '#000000';
+                    ctx.lineWidth = 0.5;
 
-                for(let i = 0; i <= quantidadeQuadrados; i++){
+            for(let i = 0; i <= quantidadeQuadrados; i++){
                     //Linha vertical
                     ctx.beginPath();
                     ctx.moveTo(i * tamanhoQuadrado, 0);
@@ -298,7 +298,7 @@
                 }
 
 
-                ctx.fill();
+                    ctx.fill();
             }
 
             //=============================
