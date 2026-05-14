@@ -284,7 +284,11 @@
                 ctx.lineWidth = 0.5;
 
                 for(let i = 0; i <= quantidadeQuadrados; i++){
-                    console.log('Quadrado' +i);
+                //Linha vertical
+                ctx.beginPath();
+                ctx.moveTo(i * tamanhoQuadrado, 0);
+                ctx.lineTO(I * tamanhoQuadrado, canvas.height);
+                ctx.stroke();
                 }
 
 
