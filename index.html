@@ -284,17 +284,17 @@
                 ctx.lineWidth = 0.5;
 
                 for(let i = 0; i <= quantidadeQuadrados; i++){
-                //Linha vertical
-                ctx.beginPath();
-                ctx.moveTo(i * tamanhoQuadrado);
-                ctx.lineTo(i * tamanhoQuadrado, canvas.height);
-                ctx.stroke();
+                    //Linha vertical
+                    ctx.beginPath();
+                    ctx.moveTo(i * tamanhoQuadrado, 0);
+                    ctx.lineTo(i * tamanhoQuadrado, canvas.height);
+                    ctx.stroke();
 
-                //Linha horizontal
-                ctx.beginPath();
-                ctx.moveTo(0, i * tamanhoQuadrado, 0);
-                ctx.lineTo(canvas.width, i * tamanhoQuadrado);
-                ctx.stroke();
+                    //Linha horizontal
+                    ctx.beginPath();
+                    ctx.moveTo(0, i * tamanhoQuadrado, 0);
+                    ctx.lineTo(canvas.width, i * tamanhoQuadrado);
+                    ctx.stroke();
                 }
 
 
