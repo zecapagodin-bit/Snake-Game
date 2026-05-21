@@ -27,7 +27,7 @@
 
             .container {
               text-align: center;  
-              background-color: #A98B76;
+              background-color: white;
               padding: 30px;
               border-radius: 20px;
               box-shadow: 0px 10px 30px black;
@@ -39,7 +39,7 @@
 
             .pontuacao {
                 font-weight: bold;
-                color: #CDB885;
+                color: #28a745;
             }
 
             .recorde {
@@ -65,7 +65,7 @@
                 
                 font-size: 16px;
                 cursor: pointer;
-                background-color: #5DD3B6;
+                background-color: #28A745;
 
                 padding: 12px 25px;
                 color: white;
@@ -86,7 +86,7 @@
             .tecla{
                 width: 50px;
                 height: 50px;
-                background-color: #5DD3B6;
+                background-color: #667eea;
                 color: #F0F0F0;
                 border: none;
                 cursor: pointer;
@@ -110,7 +110,7 @@
             .instrucoes {
                 margin-top: 20px;
                 padding: 15px;
-                background-color: #EFE1B5;
+                background-color: #e9ecef;
                 border-radius: 10px;
                 font-size: 14px;
                 color: #555;
@@ -272,33 +272,39 @@
             //FUNÇÃO PARA DESENHAR OS ELEMENTOS VISUAIS DO JOGO
             //=============================
             function desenhar(){
-                    // PASSO 1
-                    //Limpar o fundo do Canvas
-                    ctx.fillStyle = '#f0f0f0';
-                    ctx.fillRect(0, 0, canvas.width, canvas.height);
+                // PASSO 1
+                //Limpar o fundo do Canvas
+                ctx.fillStyle = '#f0f0f0';
+                ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-                    // PASSO 2
-                    // Desenhar a grade (linhas de referencia)
+                // PASSO 2
+                // Desenhar a grade (linhas de referência)
+                ctx.strokeStyle = '#e0e0e0';
+                ctx.lineWidth = 0.5;
 
-                    ctx.strokeStyle = '#000000';
-                    ctx.lineWidth = 0.5;
+                for(let i = 0; i <= quantidadeQuadrados; i++){
+                        //Linha vertical
+                        ctx.beginPath();
+                        ctx.moveTo(i * tamanhoQuadrado, 0);
+                        ctx.lineTo(i * tamanhoQuadrado, canvas.height);
+                        ctx.stroke();
 
-            for(let i = 0; i <= quantidadeQuadrados; i++){
-                    //Linha vertical
-                    ctx.beginPath();
-                    ctx.moveTo(i * tamanhoQuadrado, 0);
-                    ctx.lineTo(i * tamanhoQuadrado, canvas.height);
-                    ctx.stroke();
+                        //Linha horizontal
+                        ctx.beginPath();
+                        ctx.moveTo(0, i * tamanhoQuadrado);
+                        ctx.lineTo(canvas.width, i * tamanhoQuadrado);
+                        ctx.stroke();
+                } 
 
-                    //Linha horizontal
-                    ctx.beginPath();
-                    ctx.moveTo(0, i * tamanhoQuadrado, 0);
-                    ctx.lineTo(canvas.width, i * tamanhoQuadrado);
-                    ctx.stroke();
-                }
+                //-----PASSO 3: Desenhar a cobra --------
+                // forEach: outra forma de percorrer um array
+                cobra. forEach((pedaço, indice) => {
+                    console.log('pedaço da cobra'+indice);
 
+                });
+               
 
-                    ctx.fill();
+                ctx.fill();
             }
 
             //=============================
