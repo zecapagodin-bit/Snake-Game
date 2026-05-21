@@ -299,8 +299,15 @@
                 //-----PASSO 3: Desenhar a cobra --------
                 // forEach: outra forma de percorrer um array
                 cobra. forEach((pedaço, indice) => {
-                    console.log('pedaço da cobra'+indice);
 
+                   ctx.fillStyle = '#4CAF50';
+
+                   ctx.fillRect(
+                    pedaço.x * tamanhoQuadrado +1, 
+                    pedaço.y * tamanhoQuadrado +1, 
+                    tamanhoQuadrado -2,
+                    tamanhoQuadrado -2
+                   )
                 });
                
 
