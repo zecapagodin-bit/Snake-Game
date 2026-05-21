@@ -323,6 +323,16 @@
                     tamanhoQuadrado / 2
                    )
                 });
+
+                ctx.fillStyle = '#dc3545';
+                ctx.beginPath();
+                ctx.arc(
+                    comida.x * tamanhoQuadrado + tamanhoQuadrado / 2,
+                    comida.y * tamanhoQuadrado + tamanhoQuadrado / 2,
+                    tamanhoQuadrado / 2 - 2,
+                    0,
+                    Math.PI * 2
+                )
                
 
                 ctx.fill();
