@@ -273,11 +273,11 @@
                     cabeca.y++;
                     break;
 
-                    case 'esquerda': 
+                case 'esquerda': 
                     cabeca.x--;
                     break;
 
-                    case 'direita': 
+                case 'direita': 
                     cabeca.x++;
                     break;
                }
@@ -386,19 +386,19 @@
                 
                 if(novaDirecao === 'cima'  && direcao !== 'baixo'){
 
-                proximaDirecao === 'cima';
+                proximaDirecao = 'cima';
             }else
                  if(novaDirecao === 'baixo'  && direcao !== 'cima'){
 
-                proximaDirecao === 'baixo';
+                proximaDirecao = 'baixo';
             }else
                  if(novaDirecao === 'esquerda'  && direcao !== 'direita'){
 
-                proximaDirecao === 'esquerda';
+                proximaDirecao = 'esquerda';
             }else
                  if(novaDirecao === 'direita'  && direcao !== 'esquerda'){
 
-                proximaDirecao === 'direita';
+                proximaDirecao = 'direita';
             }else {
 
             }
