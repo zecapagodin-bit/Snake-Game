@@ -282,6 +282,14 @@
                         break;
                }
 
+                // verificar colisão com paredes (esquerda ou direita)
+                if(cabeca.x < 0 || cabeca.x >= quantidadeQuadrados){
+                   fimDeJogo();
+                   return;
+
+               }
+
+
                // adiciona nova cabeça
                cobra.unshift(cabeca);
 
@@ -290,6 +298,13 @@
                
                desenhar();                
             }
+
+               //FIM DE JOGO
+
+               function fimDeJogo(){
+                alert("Perdeu fiote!!")
+                clearInterval(intervaloJogo);
+               }
 
             //=============================
             //FUNÇÃO PARA DESENHAR OS ELEMENTOS VISUAIS DO JOGO
