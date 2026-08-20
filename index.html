@@ -247,7 +247,7 @@
                 }
 
                 //executa a função atualizarJogo a cada 100 milisegundos
-                intervaloJogo = setInterval(atualizarJogo, 150);
+                intervaloJogo = setInterval(atualizarJogo, 500);
             }
 
 
@@ -265,27 +265,29 @@
 
                //Mover a cabeça na direção atual
                switch(direcao){
-                case 'cima': 
-                    cabeca.y--;
-                    break;
+                    case 'cima':
+                        cabeca.y--;
+                        break;
+                    
+                    case 'baixo':
+                        cabeca.y++;
+                        break;
 
-                case 'baixo': 
-                    cabeca.y++;
-                    break;
+                    case 'esquerda':
+                        cabeca.x--;
+                        break;
 
-                case 'esquerda': 
-                    cabeca.x--;
-                    break;
-
-                case 'direita': 
-                    cabeca.x++;
-                    break;
+                    case 'direita':
+                        cabeca.x++;
+                        break;
                }
-               
-                cobra.unshift(cabeca);
 
-                cobra.pop();
-                
+               // adiciona nova cabeça
+               cobra.unshift(cabeca);
+
+               //remover o último elemento do vetor
+               cobra.pop();
+               
                desenhar();                
             }
 
@@ -317,44 +319,45 @@
                         ctx.stroke();
                 } 
 
-                //-----PASSO 3: Desenhar a cobra --------
+                // ----- PASSO 3: Desenhar a cobra ---------------------
                 // forEach: outra forma de percorrer um array
-                cobra. forEach((pedaço, indice) => {
+                // "Para cada pedaço da cobra, faça..."
+                cobra.forEach( (pedaco, indice) => {
 
                     let cor_do_pedaco = '#4CAF50';
                     if(indice === 0){
-                       cor_do_pedaco = '#2d5016';
+                        cor_do_pedaco = '#2d5016';
                     }
+                    ctx.fillStyle = cor_do_pedaco;
 
-                   ctx.fillStyle = cor_do_pedaco;
+                    ctx.fillRect(
+                        pedaco.x * tamanhoQuadrado + 1,
+                        pedaco.y * tamanhoQuadrado + 1,
+                        tamanhoQuadrado -2,
+                        tamanhoQuadrado -2
+                    );
 
-                   ctx.fillRect(
-                    pedaço.x * tamanhoQuadrado +1, 
-                    pedaço.y * tamanhoQuadrado +1, 
-                    tamanhoQuadrado -2,
-                    tamanhoQuadrado -2
-                   )
-
-                   //Brilho (efeito de luz) - pequeno retangulo branco semi-transparente
-                   ctx.fillStyle = 'rgba(255, 255, 255, 0.3)'
-                   ctx.fillRect(
-                    pedaço.x * tamanhoQuadrado +2, 
-                    pedaço.y * tamanhoQuadrado +2, 
-                    tamanhoQuadrado / 2,
-                    tamanhoQuadrado / 2
-                   )
+                    //Brilho (efeito de luz) - pequeno retangulo branco semi-transparente
+                    ctx.fillStyle = 'rgba(255, 255, 255, 0.3)';
+                    ctx.fillRect(
+                        pedaco.x * tamanhoQuadrado + 2,
+                        pedaco.y * tamanhoQuadrado + 2,
+                        tamanhoQuadrado / 2,
+                        tamanhoQuadrado / 2
+                    );
                 });
 
-                ctx.fillStyle = '#dc3545';
-                ctx.beginPath();
-                ctx.arc(
+
+               //----  PASSO 4 - Desenhar a comida (círculo vermelho)
+               ctx.fillStyle = '#dc3545';
+               ctx.beginPath();
+               ctx.arc(
                     comida.x * tamanhoQuadrado + tamanhoQuadrado / 2,
                     comida.y * tamanhoQuadrado + tamanhoQuadrado / 2,
                     tamanhoQuadrado / 2 - 2,
                     0,
                     Math.PI * 2
-                )
-               
+               );
 
                 ctx.fill();
             }
@@ -385,26 +388,23 @@
             }
 
             function mudarDirecao(novaDirecao){
-                
-                if(novaDirecao === 'cima'  && direcao !== 'baixo'){
+              
+                if(novaDirecao === 'cima'    &&  direcao !== 'baixo'){
+                    proximaDirecao = 'cima';
+                }
 
-                proximaDirecao = 'cima';
-            }else
-                 if(novaDirecao === 'baixo'  && direcao !== 'cima'){
+                if(novaDirecao === 'baixo'    &&  direcao !== 'cima'){
+                    proximaDirecao = 'baixo';
+                }
 
-                proximaDirecao = 'baixo';
-            }else
-                 if(novaDirecao === 'esquerda'  && direcao !== 'direita'){
+                if(novaDirecao === 'esquerda'    &&  direcao !== 'direita'){
+                    proximaDirecao = 'esquerda';
+                }
 
-                proximaDirecao = 'esquerda';
-            }else
-                 if(novaDirecao === 'direita'  && direcao !== 'esquerda'){
-
-                proximaDirecao = 'direita';
-            }else {
-
+                if(novaDirecao === 'direita'    &&  direcao !== 'esquerda'){
+                    proximaDirecao = 'direita';
+                }
             }
-        }
             
             function pausarJogo(){
                 console.log('Pausa no Jogo!!')
