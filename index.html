@@ -25,12 +25,23 @@
 
         <style>
 
+            body {
+                background: linear-gradient(135deg, #cfe8f7 0%, #fdf6e9 100%);
+                font-family: Arial, sans-serif;
+                min-height: 100vh;
+                margin: 0;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            }
+
             .container {
               text-align: center;  
-              background-color: white;
+              background-color: #fdf6e9;
               padding: 30px;
               border-radius: 20px;
-              box-shadow: 0px 10px 30px black;
+              box-shadow: 0px 10px 30px rgba(135, 190, 220, 0.5);
+              border: 1px solid #cfe8f7;
             }
 
             .info {
@@ -39,22 +50,22 @@
 
             .pontuacao {
                 font-weight: bold;
-                color: #28a745;
+                color: #5aa9d6;
             }
 
             .recorde {
                 font-weight: bold;
-                color: #a72839;  
+                color: #e0a96d;  
             }
 
             #canvas{
-                border: 3px solid #333;
+                border: 3px solid #a9d4ea;
                 border-radius:  10px;
-                background-color: #F0F0F0;
+                background-color: #fbf3e2;
                 display: block;
 
                 margin: 20px auto;
-                box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.2);
+                box-shadow: 0px 5px 15px rgba(90, 169, 214, 0.25);
             }
 
             .controles {
@@ -65,14 +76,18 @@
                 
                 font-size: 16px;
                 cursor: pointer;
-                background-color: #28A745;
+                background-color: #5aa9d6;
 
                 padding: 12px 25px;
-                color: white;
+                color: #fdf6e9;
                 border: none;
                 border-radius: 8px;
                 margin: 5px;
                 transition: all 0.3s ease;
+            }
+
+            button:hover {
+                background-color: #4593c2;
             }
 
             .teclas{
@@ -86,8 +101,8 @@
             .tecla{
                 width: 50px;
                 height: 50px;
-                background-color: #667eea;
-                color: #F0F0F0;
+                background-color: #a9d4ea;
+                color: #4a4a4a;
                 border: none;
                 cursor: pointer;
                 border-radius: 45px;
@@ -99,7 +114,7 @@
             }
 
             .tecla:active{
-                background-color: #a72839;
+                background-color: #e0a96d;
             }
 
             .tecla.vazio{
@@ -110,15 +125,15 @@
             .instrucoes {
                 margin-top: 20px;
                 padding: 15px;
-                background-color: #e9ecef;
+                background-color: #eaf5fb;
                 border-radius: 10px;
                 font-size: 14px;
-                color: #555;
+                color: #5c5c5c;
             }
 
             .instrucoes h3 {
                 margin-bottom: 10px;
-                color: #333;
+                color: #4593c2;
             }
 
             /*   
@@ -316,12 +331,12 @@
             function desenhar(){
                 // PASSO 1
                 //Limpar o fundo do Canvas
-                ctx.fillStyle = '#f0f0f0';
+                ctx.fillStyle = '#fbf3e2';
                 ctx.fillRect(0, 0, canvas.width, canvas.height);
 
                 // PASSO 2
                 // Desenhar a grade (linhas de referência)
-                ctx.strokeStyle = '#e0e0e0';
+                ctx.strokeStyle = '#e3ecf2';
                 ctx.lineWidth = 0.5;
 
                 for(let i = 0; i <= quantidadeQuadrados; i++){
@@ -343,9 +358,9 @@
                 // "Para cada pedaço da cobra, faça..."
                 cobra.forEach( (pedaco, indice) => {
 
-                    let cor_do_pedaco = '#4CAF50';
+                    let cor_do_pedaco = '#5aa9d6';
                     if(indice === 0){
-                        cor_do_pedaco = '#2d5016';
+                        cor_do_pedaco = '#2d6f99';
                     }
                     ctx.fillStyle = cor_do_pedaco;
 
@@ -367,8 +382,8 @@
                 });
 
 
-               //----  PASSO 4 - Desenhar a comida (círculo vermelho)
-               ctx.fillStyle = '#dc3545';
+               //----  PASSO 4 - Desenhar a comida (círculo)
+               ctx.fillStyle = '#e0a96d';
                ctx.beginPath();
                ctx.arc(
                     comida.x * tamanhoQuadrado + tamanhoQuadrado / 2,
