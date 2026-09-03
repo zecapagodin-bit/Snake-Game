@@ -20,114 +20,243 @@
         <title>Jogo da Cobrinha</title>
 
         <!--
-        Estilos e CSS vão ficar abaixo desta linha - Próxima Aual
+        Estilos e CSS - tema de floresta
         -->
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;700;800&family=Quicksand:wght@500;600;700&display=swap" rel="stylesheet">
 
         <style>
 
+            :root {
+                --musgo-escuro: #1B4332;
+                --musgo: #2D6A4F;
+                --folha: #52B788;
+                --folha-clara: #95D5B2;
+                --tronco: #6B4423;
+                --tronco-claro: #8B5A2B;
+                --clareira: #F1F7ED;
+                --sol: #F4A300;
+                --sol-claro: #FFD166;
+                --texto-claro: #F1F7ED;
+            }
+
+            * {
+                box-sizing: border-box;
+            }
+
             body {
-                background: linear-gradient(135deg, #FFF8E7 0%, #CDEAF7 100%);
-                font-family: Arial, sans-serif;
+                margin: 0;
+                min-height: 100vh;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                padding: 30px 16px;
+                font-family: 'Quicksand', sans-serif;
+                background:
+                    radial-gradient(circle at 20% 15%, rgba(255, 214, 102, 0.25), transparent 45%),
+                    linear-gradient(180deg, #0F2A1E 0%, #163C29 35%, #1B4332 100%);
+                position: relative;
+                overflow-x: hidden;
+            }
+
+            /* silhuetas de árvores decorando o fundo, feitas só em CSS */
+            body::before,
+            body::after {
+                content: "";
+                position: fixed;
+                bottom: 0;
+                width: 100%;
+                height: 220px;
+                background-repeat: repeat-x;
+                background-position: bottom;
+                pointer-events: none;
+                opacity: 0.6;
+                z-index: 0;
+            }
+
+            body::before {
+                background-image:
+                    radial-gradient(ellipse 70px 140px at 10% 100%, #0F2A1E 60%, transparent 62%),
+                    radial-gradient(ellipse 90px 170px at 30% 100%, #0F2A1E 60%, transparent 62%),
+                    radial-gradient(ellipse 70px 130px at 55% 100%, #0F2A1E 60%, transparent 62%),
+                    radial-gradient(ellipse 90px 180px at 80% 100%, #0F2A1E 60%, transparent 62%),
+                    radial-gradient(ellipse 70px 140px at 100% 100%, #0F2A1E 60%, transparent 62%);
+            }
+
+            body::after {
+                height: 150px;
+                opacity: 0.85;
+                background-image:
+                    radial-gradient(ellipse 60px 110px at 0% 100%, #163C29 60%, transparent 62%),
+                    radial-gradient(ellipse 80px 130px at 22% 100%, #163C29 60%, transparent 62%),
+                    radial-gradient(ellipse 60px 100px at 45% 100%, #163C29 60%, transparent 62%),
+                    radial-gradient(ellipse 90px 140px at 68% 100%, #163C29 60%, transparent 62%),
+                    radial-gradient(ellipse 70px 120px at 90% 100%, #163C29 60%, transparent 62%);
+            }
+
+            h1 {
+                font-family: 'Baloo 2', sans-serif;
+                font-weight: 800;
+                color: var(--texto-claro);
+                font-size: 2.2em;
+                margin: 0 0 18px 0;
+                text-shadow: 0 3px 0 rgba(0,0,0,0.25);
             }
 
             .container {
+              position: relative;
+              z-index: 1;
               text-align: center;  
-              background-color: #FFF8E7;
-              padding: 30px;
-              border-radius: 20px;
-              box-shadow: 0px 10px 30px rgba(120, 170, 200, 0.45);
+              background: linear-gradient(180deg, #FBF3E1 0%, #F1E4C7 100%);
+              padding: 28px 30px 22px;
+              border-radius: 26px;
+              border: 6px solid var(--tronco-claro);
+              box-shadow:
+                0 18px 40px rgba(0, 0, 0, 0.45),
+                inset 0 0 0 3px rgba(107, 68, 35, 0.25);
+              max-width: 460px;
+            }
+
+            /* pequenas folhas nos cantos do painel, para lembrar uma moldura de trepadeira */
+            .container::before,
+            .container::after {
+                content: "🌿";
+                position: absolute;
+                font-size: 28px;
+                filter: drop-shadow(0 2px 2px rgba(0,0,0,0.25));
+            }
+            .container::before {
+                top: -16px;
+                left: -14px;
+                transform: rotate(-25deg);
+            }
+            .container::after {
+                bottom: -16px;
+                right: -14px;
+                transform: rotate(155deg);
             }
 
             .info {
-                font-size: 1em;
+                font-size: 1.05em;
+                display: flex;
+                justify-content: center;
+                gap: 24px;
+                flex-wrap: wrap;
+                font-weight: 600;
             }
 
             .pontuacao {
-                font-weight: bold;
-                color: #4A90A4;
+                color: var(--musgo);
+            }
+
+            .pontuacao span, .recorde span {
+                font-family: 'Baloo 2', sans-serif;
+                color: var(--sol);
+                -webkit-text-stroke: 0.6px #7a4d00;
             }
 
             .recorde {
-                font-weight: bold;
-                color: #2C6E8E;  
+                color: var(--tronco);
             }
 
             #canvas{
-                border: 3px solid #A8D8EA;
-                border-radius:  10px;
-                background-color: #FDF6E3;
+                border: 4px solid var(--tronco-claro);
+                border-radius:  14px;
+                background-color: #EAF3E1;
                 display: block;
 
-                margin: 20px auto;
-                box-shadow: 0px 5px 15px rgba(74, 144, 164, 0.25);
+                margin: 18px auto;
+                box-shadow:
+                    inset 0 0 0 2px rgba(255,255,255,0.5),
+                    0 8px 18px rgba(27, 67, 50, 0.35);
             }
 
             .controles {
-                margin-top: 20px;
+                margin-top: 8px;
             }
 
             button {
-                
+                font-family: 'Baloo 2', sans-serif;
                 font-size: 16px;
+                font-weight: 700;
                 cursor: pointer;
-                background-color: #6FB7D9;
+                background: linear-gradient(180deg, var(--folha) 0%, var(--musgo) 100%);
 
-                padding: 12px 25px;
-                color: #FFF8E7;
+                padding: 12px 24px;
+                color: #FFFFFF;
                 border: none;
-                border-radius: 8px;
+                border-bottom: 4px solid #1e4a34;
+                border-radius: 12px;
                 margin: 5px;
-                transition: all 0.3s ease;
+                transition: transform 0.15s ease, filter 0.15s ease;
             }
 
             button:hover {
-                background-color: #4A90A4;
+                filter: brightness(1.08);
+                transform: translateY(-1px);
+            }
+
+            button:active {
+                transform: translateY(2px);
+                border-bottom-width: 2px;
             }
 
             .teclas{
                 display: grid;
-                grid-template-columns: repeat(3, 50px);
-                gap: 5px;
+                grid-template-columns: repeat(3, 52px);
+                gap: 6px;
                 justify-content: center;
-                margin: 15px auto;
+                margin: 16px auto 4px;
             }
 
             .tecla{
-                width: 50px;
-                height: 50px;
-                background-color: #A8D8EA;
-                color: #2C6E8E;
+                width: 52px;
+                height: 52px;
+                background: linear-gradient(180deg, var(--tronco-claro) 0%, var(--tronco) 100%);
+                color: var(--clareira);
                 border: none;
+                border-bottom: 4px solid #40260f;
                 cursor: pointer;
-                border-radius: 45px;
+                border-radius: 14px;
                 font-size: 20px;
                 display: flex;
                 align-items: center;
                 justify-content: center;
                 font-weight: bold;
+                transition: transform 0.15s ease;
             }
 
             .tecla:active{
-                background-color: #4A90A4;
+                background: #40260f;
+                transform: translateY(2px);
+                border-bottom-width: 2px;
             }
 
             .tecla.vazio{
-                background-color: transparent;
+                background: transparent;
+                border: none;
                 cursor: default;
             }
 
             .instrucoes {
-                margin-top: 20px;
-                padding: 15px;
-                background-color: #E6F4F9;
-                border-radius: 10px;
+                margin-top: 18px;
+                padding: 14px 16px;
+                background: rgba(82, 183, 136, 0.15);
+                border: 2px dashed var(--folha);
+                border-radius: 14px;
                 font-size: 14px;
-                color: #3A6A7D;
+                color: #2C6E49;
+                text-align: left;
             }
 
             .instrucoes h3 {
-                margin-bottom: 10px;
-                color: #2C6E8E;
+                margin: 0 0 8px 0;
+                color: var(--musgo-escuro);
+                font-family: 'Baloo 2', sans-serif;
+            }
+
+            .instrucoes p {
+                margin: 4px 0;
             }
 
             /*   
@@ -137,10 +266,14 @@
             */
             @media (max-width: 600px){
                 h1 {
-                    font-size: 1.8em;
+                    font-size: 1.6em;
                 }
                 .info {
-                    font-size: 1em;
+                    font-size: 0.95em;
+                    gap: 14px;
+                }
+                .container {
+                    padding: 22px 16px 18px;
                 }
             }
 
@@ -302,12 +435,33 @@
                    return;
                }
 
+               // verificar colisão com o próprio corpo
+               for(let pedaco of cobra){
+                    if(cabeca.x === pedaco.x && cabeca.y === pedaco.y){
+                        fimDeJogo();
+                        return;
+                    }
+               }
 
                // adiciona nova cabeça
                cobra.unshift(cabeca);
 
-               //remover o último elemento do vetor
-               cobra.pop();
+               // verificar se comeu a comida
+               if(cabeca.x === comida.x && cabeca.y === comida.y){
+                    pontos += 10;
+                    document.getElementById('pontos').textContent = pontos;
+
+                    if(pontos > recorde){
+                        recorde = pontos;
+                        document.getElementById('recorde').textContent = recorde;
+                        localStorage.setItem('recordeCobrinha', recorde);
+                    }
+
+                    gerarComida();
+               } else {
+                    //remover o último elemento do vetor (só quando não comeu)
+                    cobra.pop();
+               }
                
                desenhar();                
             }
@@ -319,14 +473,15 @@
                 clearInterval(intervaloJogo);
 
 
-                ctx.fillStyle = 'rgba(0, 0, 0, 0.7)';
+                ctx.fillStyle = 'rgba(15, 42, 30, 0.75)';
                 ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-                ctx.fillStyle = 'white';
+                ctx.fillStyle = '#FFD166';
                 ctx.font = 'bold 40px Arial';
                 ctx.textAlign = 'center';
                 ctx.fillText('PERDEU FIOTE', canvas.width / 2, canvas.height / 2)
 
+                ctx.fillStyle = '#F1F7ED';
                 ctx.font = '20px Arial';
                 ctx.fillText(`pontuação: ${pontos}`, canvas.width / 2, (canvas.height / 2 + 50));
 
@@ -337,13 +492,13 @@
             //=============================
             function desenhar(){
                 // PASSO 1
-                //Limpar o fundo do Canvas
-                ctx.fillStyle = '#f0f0f0';
+                //Limpar o fundo do Canvas (tom de clareira / grama clara)
+                ctx.fillStyle = '#EAF3E1';
                 ctx.fillRect(0, 0, canvas.width, canvas.height);
 
                 // PASSO 2
                 // Desenhar a grade (linhas de referência)
-                ctx.strokeStyle = '#e0e0e0';
+                ctx.strokeStyle = '#D3E4C4';
                 ctx.lineWidth = 0.5;
 
                 for(let i = 0; i <= quantidadeQuadrados; i++){
@@ -576,7 +731,14 @@
             }
             
             function pausarJogo(){
-                console.log('Pausa no Jogo!!')
+                pausarJogo = !pausarJogo;
+
+                if(pausarJogo === true){
+                    clearInterval(intervaloJogo);
+                }else{
+                    intervaloJogo = setInterval(atualizarJogo, 200);
+                }
+
             }
 
             //================================//
