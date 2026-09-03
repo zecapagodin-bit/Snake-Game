@@ -435,33 +435,11 @@
                    return;
                }
 
-               // verificar colisão com o próprio corpo
-               for(let pedaco of cobra){
-                    if(cabeca.x === pedaco.x && cabeca.y === pedaco.y){
-                        fimDeJogo();
-                        return;
-                    }
-               }
-
                // adiciona nova cabeça
                cobra.unshift(cabeca);
 
-               // verificar se comeu a comida
-               if(cabeca.x === comida.x && cabeca.y === comida.y){
-                    pontos += 10;
-                    document.getElementById('pontos').textContent = pontos;
-
-                    if(pontos > recorde){
-                        recorde = pontos;
-                        document.getElementById('recorde').textContent = recorde;
-                        localStorage.setItem('recordeCobrinha', recorde);
-                    }
-
-                    gerarComida();
-               } else {
-                    //remover o último elemento do vetor (só quando não comeu)
-                    cobra.pop();
-               }
+               //remover o último elemento do vetor
+               cobra.pop();
                
                desenhar();                
             }
