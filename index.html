@@ -709,10 +709,13 @@
             }
             
             function pausarJogo(){
+                IF(!jogoAtivo){
+                    return;
+                }
 
                 jogoPausado = !jogoPausado;
 
-                if(pausarJogo === true){
+                if(jogoPausado === true){
                     clearInterval(jogoPausado);
                   
 
