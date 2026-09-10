@@ -709,7 +709,8 @@
             }
             
             function pausarJogo(){
-                pausarJogo = !pausarJogo;
+
+                jogoPausado = !jogoPausado;
 
                 if(pausarJogo === true){
                     clearInterval(intervaloJogo);
@@ -722,17 +723,24 @@
             //================================//
             //---CONTRTOLE DE TECLADO---------//
             //================================//
-              document.addEventListener('keydown', function(event){
-                if(event.key === 'ArrowDown'){
-                    mudarDirecao('baixo');
-                }else if(event.key === 'ArrowUp'){
-                    mudarDirecao('cima');
-                }else if(event.key === 'ArrowLeft'){
-                    mudarDirecao('esquerda');
-                }else if(event.key === 'ArrowRight'){
-                    mudarDirecao('direita');
-                }
-              })
+               document.addEventListener('keydown', function(event){
+              if(event.key === 'ArrowDown'){
+                 event.preventDefault();
+                 mudarDirecao('baixo');
+              }else if(event.key === 'ArrowUp'){
+                event.preventDefault();
+                mudarDirecao('cima');
+              }else if(event.key === 'ArrowLeft'){
+                event.preventDefault();
+                mudarDirecao('esquerda');
+              }else if(event.key === 'ArrowRight'){
+                event.preventDefault();
+                mudarDirecao('direita');
+              }else if(event.key === ' '){
+                event.preventDefault();
+                pausarJogo();
+              }
+                })
                 
 
         
