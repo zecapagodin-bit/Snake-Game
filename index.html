@@ -713,7 +713,18 @@
                 jogoPausado = !jogoPausado;
 
                 if(pausarJogo === true){
-                    clearInterval(intervaloJogo);
+                    clearInterval(jogoPausado);
+                  
+
+
+                ctx.fillStyle = 'rgba(15, 42, 30, 0.75)';
+                ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+                ctx.fillStyle = '#FFD166';
+                ctx.font = 'bold 40px Arial';
+                ctx.textAlign = 'center';
+                ctx.fillText('JOGO PAUSADO', canvas.width / 2, canvas.height / 2)
+
                 }else{
                     intervaloJogo = setInterval(atualizarJogo, 300);
                 }
