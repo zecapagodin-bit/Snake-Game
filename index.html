@@ -17,10 +17,10 @@
         initial-scale=1 -> não aplica zoom automático ao abrir a página. 
         Sem ela o celular vai tentar mostrar a página como se fosse um computador
         -->
-        <title>Jogo da Cobrinha</title>
+        <title>Jogo do Urso</title>
 
         <!--
-        Estilos e CSS - tema de floresta
+        Estilos e CSS - tema de toca de urso na floresta
         -->
         <link rel="preconnect" href="https://fonts.googleapis.com">
         <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;700;800&family=Quicksand:wght@500;600;700&display=swap" rel="stylesheet">
@@ -28,16 +28,18 @@
         <style>
 
             :root {
-                --musgo-escuro: #1B4332;
-                --musgo: #2D6A4F;
-                --folha: #52B788;
-                --folha-clara: #95D5B2;
+                --caverna-escura: #241611;
+                --caverna: #3B2417;
+                --pedra: #6E5849;
+                --pedra-clara: #A88B72;
                 --tronco: #6B4423;
                 --tronco-claro: #8B5A2B;
-                --clareira: #F1F7ED;
-                --sol: #F4A300;
-                --sol-claro: #FFD166;
-                --texto-claro: #F1F7ED;
+                --floresta-escura: #1F3320;
+                --floresta: #3B5D3A;
+                --clareira: #F3E7CC;
+                --mel: #E8960A;
+                --mel-claro: #FFC94D;
+                --texto-claro: #FBEFD9;
             }
 
             * {
@@ -53,13 +55,14 @@
                 padding: 30px 16px;
                 font-family: 'Quicksand', sans-serif;
                 background:
-                    radial-gradient(circle at 20% 15%, rgba(255, 214, 102, 0.25), transparent 45%),
-                    linear-gradient(180deg, #0F2A1E 0%, #163C29 35%, #1B4332 100%);
+                    radial-gradient(circle at 20% 15%, rgba(255, 201, 77, 0.2), transparent 45%),
+                    linear-gradient(180deg, #1A120B 0%, #241611 35%, #2B1B0E 100%);
                 position: relative;
                 overflow-x: hidden;
             }
 
-            /* silhuetas de árvores decorando o fundo, feitas só em CSS */
+            /* silhuetas de montanhas e pinheiros ao fundo, feitas só em CSS,
+               lembrando uma toca de urso na floresta */
             body::before,
             body::after {
                 content: "";
@@ -70,28 +73,28 @@
                 background-repeat: repeat-x;
                 background-position: bottom;
                 pointer-events: none;
-                opacity: 0.6;
+                opacity: 0.55;
                 z-index: 0;
             }
 
             body::before {
                 background-image:
-                    radial-gradient(ellipse 70px 140px at 10% 100%, #0F2A1E 60%, transparent 62%),
-                    radial-gradient(ellipse 90px 170px at 30% 100%, #0F2A1E 60%, transparent 62%),
-                    radial-gradient(ellipse 70px 130px at 55% 100%, #0F2A1E 60%, transparent 62%),
-                    radial-gradient(ellipse 90px 180px at 80% 100%, #0F2A1E 60%, transparent 62%),
-                    radial-gradient(ellipse 70px 140px at 100% 100%, #0F2A1E 60%, transparent 62%);
+                    radial-gradient(ellipse 90px 150px at 10% 100%, #14100C 55%, transparent 58%),
+                    radial-gradient(ellipse 110px 180px at 30% 100%, #14100C 55%, transparent 58%),
+                    radial-gradient(ellipse 90px 140px at 55% 100%, #14100C 55%, transparent 58%),
+                    radial-gradient(ellipse 110px 190px at 80% 100%, #14100C 55%, transparent 58%),
+                    radial-gradient(ellipse 90px 150px at 100% 100%, #14100C 55%, transparent 58%);
             }
 
             body::after {
                 height: 150px;
-                opacity: 0.85;
+                opacity: 0.8;
                 background-image:
-                    radial-gradient(ellipse 60px 110px at 0% 100%, #163C29 60%, transparent 62%),
-                    radial-gradient(ellipse 80px 130px at 22% 100%, #163C29 60%, transparent 62%),
-                    radial-gradient(ellipse 60px 100px at 45% 100%, #163C29 60%, transparent 62%),
-                    radial-gradient(ellipse 90px 140px at 68% 100%, #163C29 60%, transparent 62%),
-                    radial-gradient(ellipse 70px 120px at 90% 100%, #163C29 60%, transparent 62%);
+                    radial-gradient(ellipse 60px 110px at 0% 100%, #24170F 60%, transparent 62%),
+                    radial-gradient(ellipse 80px 130px at 22% 100%, #24170F 60%, transparent 62%),
+                    radial-gradient(ellipse 60px 100px at 45% 100%, #24170F 60%, transparent 62%),
+                    radial-gradient(ellipse 90px 140px at 68% 100%, #24170F 60%, transparent 62%),
+                    radial-gradient(ellipse 70px 120px at 90% 100%, #24170F 60%, transparent 62%);
             }
 
             h1 {
@@ -100,27 +103,27 @@
                 color: var(--texto-claro);
                 font-size: 2.2em;
                 margin: 0 0 18px 0;
-                text-shadow: 0 3px 0 rgba(0,0,0,0.25);
+                text-shadow: 0 3px 0 rgba(0,0,0,0.35);
             }
 
             .container {
               position: relative;
               z-index: 1;
               text-align: center;  
-              background: linear-gradient(180deg, #FBF3E1 0%, #F1E4C7 100%);
+              background: linear-gradient(180deg, #EFE1C4 0%, #E3D0A6 100%);
               padding: 28px 30px 22px;
               border-radius: 26px;
               border: 6px solid var(--tronco-claro);
               box-shadow:
-                0 18px 40px rgba(0, 0, 0, 0.45),
+                0 18px 40px rgba(0, 0, 0, 0.5),
                 inset 0 0 0 3px rgba(107, 68, 35, 0.25);
               max-width: 460px;
             }
 
-            /* pequenas folhas nos cantos do painel, para lembrar uma moldura de trepadeira */
+            /* patinhas de urso nos cantos do painel, no lugar das folhas */
             .container::before,
             .container::after {
-                content: "🌿";
+                content: "🐾";
                 position: absolute;
                 font-size: 28px;
                 filter: drop-shadow(0 2px 2px rgba(0,0,0,0.25));
@@ -146,12 +149,12 @@
             }
 
             .pontuacao {
-                color: var(--musgo);
+                color: var(--floresta);
             }
 
             .pontuacao span, .recorde span {
                 font-family: 'Baloo 2', sans-serif;
-                color: var(--sol);
+                color: var(--mel);
                 -webkit-text-stroke: 0.6px #7a4d00;
             }
 
@@ -162,13 +165,15 @@
             #canvas{
                 border: 4px solid var(--tronco-claro);
                 border-radius:  14px;
-                background-color: #EAF3E1;
+                background-color: #EFE3C8;
                 display: block;
+                max-width: 100%;
+                height: auto;
 
                 margin: 18px auto;
                 box-shadow:
                     inset 0 0 0 2px rgba(255,255,255,0.5),
-                    0 8px 18px rgba(27, 67, 50, 0.35);
+                    0 8px 18px rgba(36, 22, 17, 0.4);
             }
 
             .controles {
@@ -180,12 +185,12 @@
                 font-size: 16px;
                 font-weight: 700;
                 cursor: pointer;
-                background: linear-gradient(180deg, var(--folha) 0%, var(--musgo) 100%);
+                background: linear-gradient(180deg, var(--mel-claro) 0%, var(--mel) 100%);
 
                 padding: 12px 24px;
-                color: #FFFFFF;
+                color: #4A2E00;
                 border: none;
-                border-bottom: 4px solid #1e4a34;
+                border-bottom: 4px solid #A85E00;
                 border-radius: 12px;
                 margin: 5px;
                 transition: transform 0.15s ease, filter 0.15s ease;
@@ -241,17 +246,17 @@
             .instrucoes {
                 margin-top: 18px;
                 padding: 14px 16px;
-                background: rgba(82, 183, 136, 0.15);
-                border: 2px dashed var(--folha);
+                background: rgba(232, 150, 10, 0.15);
+                border: 2px dashed var(--mel);
                 border-radius: 14px;
                 font-size: 14px;
-                color: #2C6E49;
+                color: #6E4B00;
                 text-align: left;
             }
 
             .instrucoes h3 {
                 margin: 0 0 8px 0;
-                color: var(--musgo-escuro);
+                color: var(--caverna);
                 font-family: 'Baloo 2', sans-serif;
             }
 
@@ -282,7 +287,7 @@
     <body>
 
         <div  class="container">
-            <h1>&#128013;  Jogo da Cobrinha &#128517;</h1>
+            <h1>&#128058;  Jogo do Urso &#127855;</h1>
 
             <div class="info">
 
@@ -300,7 +305,7 @@
                 
                 <canvas>: é um elemento especial para desenho 2D ou 3D. Por si só,
                 é apenas um retângulo vazio. O JavaScript vai usar o "contexto 2D" 
-                para desenhar a cobra, e comida, etc
+                para desenhar o urso, a comida, etc
                 -->
 
             </canvas>
@@ -325,8 +330,8 @@
 
             <div class="instrucoes">
                 <h3>Como Jogar:</h3>
-                <p>Use as setas de teclado ou os botões acima para controlar a cobra</p>
-                <p>Coma as maçãs vermelhas &#127822; para crescer e ganhar pontos</p>
+                <p>Use as setas de teclado ou os botões acima para controlar o urso</p>
+                <p>Coma os favos de mel &#127855; para crescer e ganhar pontos</p>
                 <p>Não bata nas paredes nem no próprio corpo</p>
             </div>
 
@@ -347,7 +352,7 @@
             //============================
             // Variáveis do Jogo
             //============================
-            let cobra;              // Array (vetor) que guarda as posições da cobra
+            let cobra;              // Array (vetor) que guarda as posições da cobra (corpo do urso)
             let direcao;            // Direção atual da cobra
             let proximaDirecao;     // Próxima direção (evita viradas impossíveis)
             let comida;             // Posição da comida
@@ -439,7 +444,7 @@
                cobra.unshift(cabeca);
 
                //remover o último elemento do vetor
-               cobra.pop();
+               //cobra.pop();
                
                desenhar();                
             }
@@ -451,15 +456,15 @@
                 clearInterval(intervaloJogo);
 
 
-                ctx.fillStyle = 'rgba(15, 42, 30, 0.75)';
+                ctx.fillStyle = 'rgba(36, 22, 17, 0.8)';
                 ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-                ctx.fillStyle = '#FFD166';
+                ctx.fillStyle = '#FFC94D';
                 ctx.font = 'bold 40px Arial';
                 ctx.textAlign = 'center';
                 ctx.fillText('PERDEU FIOTE', canvas.width / 2, canvas.height / 2)
 
-                ctx.fillStyle = '#F1F7ED';
+                ctx.fillStyle = '#FBEFD9';
                 ctx.font = '20px Arial';
                 ctx.fillText(`pontuação: ${pontos}`, canvas.width / 2, (canvas.height / 2 + 50));
 
@@ -470,13 +475,13 @@
             //=============================
             function desenhar(){
                 // PASSO 1
-                //Limpar o fundo do Canvas (tom de clareira / grama clara)
-                ctx.fillStyle = '#EAF3E1';
+                //Limpar o fundo do Canvas (tom de terra clara da toca)
+                ctx.fillStyle = '#EFE3C8';
                 ctx.fillRect(0, 0, canvas.width, canvas.height);
 
                 // PASSO 2
                 // Desenhar a grade (linhas de referência)
-                ctx.strokeStyle = '#D3E4C4';
+                ctx.strokeStyle = '#D8C6A0';
                 ctx.lineWidth = 0.5;
 
                 for(let i = 0; i <= quantidadeQuadrados; i++){
@@ -493,9 +498,9 @@
                         ctx.stroke();
                 } 
 
-                // ----- PASSO 3: Desenhar a cobra ---------------------
-                // percorremos do rabo para a cabeça para as escamas
-                // ficarem sobrepostas de forma natural
+                // ----- PASSO 3: Desenhar o urso ---------------------
+                // percorremos do rabo para a cabeça para o pelo
+                // ficar sobreposto de forma natural
                 for(let indice = cobra.length - 1; indice >= 0; indice--){
                     let pedaco = cobra[indice];
                     let cx = pedaco.x * tamanhoQuadrado + tamanhoQuadrado / 2;
@@ -508,8 +513,8 @@
                     }
                 }
 
-               //----  PASSO 4 - Desenhar a comida (maçã) ----------
-               desenharMaca();
+               //----  PASSO 4 - Desenhar a comida (favo de mel) ----------
+               desenharMel();
             }
 
             //=============================
@@ -527,35 +532,39 @@
             }
 
             //=============================
-            // Desenha um segmento do corpo da cobra, com sombreado
-            // e uma "escama" para dar textura
+            // Desenha um segmento do corpo do urso, com sombreado
+            // e um leve traço de pelagem para dar textura
             //=============================
             function desenharCorpo(pedaco, cx, cy, indice){
                 let x = pedaco.x * tamanhoQuadrado + 1;
                 let y = pedaco.y * tamanhoQuadrado + 1;
                 let tamanho = tamanhoQuadrado - 2;
 
-                let corClara = (indice % 2 === 0) ? '#79D070' : '#5EB855';
-                let corEscura = (indice % 2 === 0) ? '#4C9A45' : '#3B7D35';
+                let corClara = (indice % 2 === 0) ? '#8B5A2B' : '#6B4423';
+                let corEscura = (indice % 2 === 0) ? '#5C3A1E' : '#42280F';
 
                 let gradiente = ctx.createRadialGradient(cx - 3, cy - 3, 1, cx, cy, tamanhoQuadrado / 2);
                 gradiente.addColorStop(0, corClara);
                 gradiente.addColorStop(1, corEscura);
 
                 ctx.fillStyle = gradiente;
-                retanguloArredondado(x, y, tamanho, tamanho, 6);
+                retanguloArredondado(x, y, tamanho, tamanho, 8);
                 ctx.fill();
 
-                //escama (pequeno brilho oval)
-                ctx.fillStyle = 'rgba(255, 255, 255, 0.25)';
-                ctx.beginPath();
-                ctx.ellipse(cx - 2, cy - 2, tamanhoQuadrado / 6, tamanhoQuadrado / 8, Math.PI / 4, 0, Math.PI * 2);
-                ctx.fill();
+                //pelagem (pequenos traços escuros para dar textura de pelo)
+                ctx.strokeStyle = 'rgba(0, 0, 0, 0.18)';
+                ctx.lineWidth = 1;
+                for(let t = -1; t <= 1; t++){
+                    ctx.beginPath();
+                    ctx.moveTo(cx - 4, cy + t * 3);
+                    ctx.lineTo(cx + 4, cy + t * 3 - 1);
+                    ctx.stroke();
+                }
             }
 
             //=============================
-            // Desenha a cabeça da cobra, com olhos e língua
-            // voltados para a direção atual do movimento
+            // Desenha a cabeça do urso, com orelhas, focinho, nariz
+            // e olhos voltados para a direção atual do movimento
             //=============================
             function desenharCabeca(cx, cy){
                 let raio = tamanhoQuadrado / 2;
@@ -568,99 +577,117 @@
                     case 'baixo':    dirX = 0;  dirY = 1;  break;
                 }
 
-                //corpo da cabeça
+                let perpX = -dirY, perpY = dirX;
+
+                //orelhas (dois círculos atrás da cabeça)
+                ctx.fillStyle = '#5C3A1E';
+                ctx.beginPath();
+                ctx.arc(cx - dirX * raio * 0.3 + perpX * raio * 0.75, cy - dirY * raio * 0.3 + perpY * raio * 0.75, raio * 0.35, 0, Math.PI * 2);
+                ctx.fill();
+                ctx.beginPath();
+                ctx.arc(cx - dirX * raio * 0.3 - perpX * raio * 0.75, cy - dirY * raio * 0.3 - perpY * raio * 0.75, raio * 0.35, 0, Math.PI * 2);
+                ctx.fill();
+
+                //cabeça (corpo principal)
                 let gradiente = ctx.createRadialGradient(cx - 3, cy - 3, 1, cx, cy, raio + 1);
-                gradiente.addColorStop(0, '#6FCB63');
-                gradiente.addColorStop(1, '#2d5016');
+                gradiente.addColorStop(0, '#8B5A2B');
+                gradiente.addColorStop(1, '#42280F');
                 ctx.fillStyle = gradiente;
                 ctx.beginPath();
                 ctx.arc(cx, cy, raio, 0, Math.PI * 2);
                 ctx.fill();
 
-                //língua (só aparece na frente da cabeça)
-                ctx.strokeStyle = '#c0392b';
-                ctx.lineWidth = 1.5;
-                let pontaX = cx + dirX * (raio + 6);
-                let pontaY = cy + dirY * (raio + 6);
-                let baseX = cx + dirX * raio;
-                let baseY = cy + dirY * raio;
+                //focinho (parte clara virada para a direção do movimento)
+                let focinhoX = cx + dirX * raio * 0.7;
+                let focinhoY = cy + dirY * raio * 0.7;
+                ctx.fillStyle = '#D9B48C';
                 ctx.beginPath();
-                ctx.moveTo(baseX, baseY);
-                ctx.lineTo(pontaX, pontaY);
-                ctx.stroke();
-                //garfo da língua
-                let perpX = -dirY, perpY = dirX;
+                ctx.ellipse(focinhoX, focinhoY, raio * 0.55, raio * 0.42, Math.atan2(dirY, dirX), 0, Math.PI * 2);
+                ctx.fill();
+
+                //nariz (na ponta do focinho)
+                let narizX = cx + dirX * (raio + 2);
+                let narizY = cy + dirY * (raio + 2);
+                ctx.fillStyle = '#1A1A1A';
                 ctx.beginPath();
-                ctx.moveTo(pontaX, pontaY);
-                ctx.lineTo(pontaX + dirX * 2 + perpX * 2, pontaY + dirY * 2 + perpY * 2);
-                ctx.moveTo(pontaX, pontaY);
-                ctx.lineTo(pontaX + dirX * 2 - perpX * 2, pontaY + dirY * 2 - perpY * 2);
-                ctx.stroke();
+                ctx.ellipse(narizX, narizY, 2.4, 1.7, Math.atan2(dirY, dirX), 0, Math.PI * 2);
+                ctx.fill();
 
                 //olhos (posicionados perpendicularmente à direção do movimento)
-                let olho1X = cx + dirX * 2 + perpX * 4;
-                let olho1Y = cy + dirY * 2 + perpY * 4;
-                let olho2X = cx + dirX * 2 - perpX * 4;
-                let olho2Y = cy + dirY * 2 - perpY * 4;
+                let olho1X = cx + dirX * 1 + perpX * 4;
+                let olho1Y = cy + dirY * 1 + perpY * 4;
+                let olho2X = cx + dirX * 1 - perpX * 4;
+                let olho2Y = cy + dirY * 1 - perpY * 4;
 
                 [[olho1X, olho1Y], [olho2X, olho2Y]].forEach(([ox, oy]) => {
                     ctx.fillStyle = '#ffffff';
                     ctx.beginPath();
-                    ctx.arc(ox, oy, 2.3, 0, Math.PI * 2);
+                    ctx.arc(ox, oy, 2, 0, Math.PI * 2);
                     ctx.fill();
 
                     ctx.fillStyle = '#111111';
                     ctx.beginPath();
-                    ctx.arc(ox + dirX * 0.8, oy + dirY * 0.8, 1.1, 0, Math.PI * 2);
+                    ctx.arc(ox + dirX * 0.6, oy + dirY * 0.6, 1, 0, Math.PI * 2);
                     ctx.fill();
                 });
             }
 
             //=============================
-            // Desenha a comida como uma maçã (corpo, cabinho e folha)
+            // Desenha a comida como um favo de mel hexagonal,
+            // com textura de favo e uma gotinha escorrendo
             //=============================
-            function desenharMaca(){
+            function desenharMel(){
                 let cx = comida.x * tamanhoQuadrado + tamanhoQuadrado / 2;
                 let cy = comida.y * tamanhoQuadrado + tamanhoQuadrado / 2;
-                let raio = tamanhoQuadrado / 2 - 3;
+                let raio = tamanhoQuadrado / 2 - 2;
 
-                //corpo da maçã (dois lóbulos + gradiente para dar volume)
-                let gradiente = ctx.createRadialGradient(cx - 3, cy - 4, 1, cx, cy, raio + 2);
-                gradiente.addColorStop(0, '#FF6B6B');
-                gradiente.addColorStop(0.55, '#E63946');
-                gradiente.addColorStop(1, '#A81C2C');
+                //hexágono do favo, com gradiente dourado para dar volume
+                let gradiente = ctx.createRadialGradient(cx - 2, cy - 2, 1, cx, cy, raio + 2);
+                gradiente.addColorStop(0, '#FFD166');
+                gradiente.addColorStop(0.6, '#F4A300');
+                gradiente.addColorStop(1, '#C97B00');
                 ctx.fillStyle = gradiente;
 
                 ctx.beginPath();
-                ctx.arc(cx - raio * 0.55, cy + 1, raio * 0.75, 0, Math.PI * 2);
-                ctx.arc(cx + raio * 0.55, cy + 1, raio * 0.75, 0, Math.PI * 2);
-                ctx.arc(cx, cy + 2, raio, 0, Math.PI * 2);
+                for(let i = 0; i < 6; i++){
+                    let angulo = Math.PI / 3 * i - Math.PI / 2;
+                    let px = cx + raio * Math.cos(angulo);
+                    let py = cy + raio * Math.sin(angulo);
+                    if(i === 0){ ctx.moveTo(px, py); } else { ctx.lineTo(px, py); }
+                }
+                ctx.closePath();
                 ctx.fill();
 
-                //reentrância no topo da maçã
-                ctx.fillStyle = '#F0F0F0';
-                ctx.beginPath();
-                ctx.ellipse(cx, cy - raio, 2, 1.5, 0, 0, Math.PI * 2);
-                ctx.fill();
-
-                //cabinho
-                ctx.strokeStyle = '#6B4226';
-                ctx.lineWidth = 1.8;
-                ctx.beginPath();
-                ctx.moveTo(cx, cy - raio + 1);
-                ctx.lineTo(cx + 1.5, cy - raio - 4);
+                ctx.strokeStyle = '#A85E00';
+                ctx.lineWidth = 1;
                 ctx.stroke();
 
-                //folha
-                ctx.fillStyle = '#4CAF50';
+                //hexágono interno (textura do favo)
+                ctx.strokeStyle = 'rgba(168, 94, 0, 0.5)';
+                ctx.lineWidth = 0.6;
+                let raioInterno = raio * 0.5;
                 ctx.beginPath();
-                ctx.ellipse(cx + 4, cy - raio - 3, 3.5, 1.8, Math.PI / 3, 0, Math.PI * 2);
+                for(let i = 0; i < 6; i++){
+                    let angulo = Math.PI / 3 * i - Math.PI / 2;
+                    let px = cx + raioInterno * Math.cos(angulo);
+                    let py = cy + raioInterno * Math.sin(angulo);
+                    if(i === 0){ ctx.moveTo(px, py); } else { ctx.lineTo(px, py); }
+                }
+                ctx.closePath();
+                ctx.stroke();
+
+                //gotinha de mel escorrendo
+                ctx.fillStyle = '#F4A300';
+                ctx.beginPath();
+                ctx.moveTo(cx + raio * 0.3, cy + raio * 0.7);
+                ctx.quadraticCurveTo(cx + raio * 0.5, cy + raio * 1.3, cx + raio * 0.3, cy + raio * 1.6);
+                ctx.quadraticCurveTo(cx + raio * 0.1, cy + raio * 1.3, cx + raio * 0.3, cy + raio * 0.7);
                 ctx.fill();
 
                 //brilho (dá volume/realismo)
-                ctx.fillStyle = 'rgba(255, 255, 255, 0.55)';
+                ctx.fillStyle = 'rgba(255, 255, 255, 0.5)';
                 ctx.beginPath();
-                ctx.ellipse(cx - raio / 2.5, cy - raio / 3, raio / 4, raio / 6, -Math.PI / 5, 0, Math.PI * 2);
+                ctx.ellipse(cx - raio / 3, cy - raio / 3, raio / 5, raio / 8, -Math.PI / 5, 0, Math.PI * 2);
                 ctx.fill();
             }
 
