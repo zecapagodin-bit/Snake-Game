@@ -443,8 +443,12 @@
                // adiciona nova cabeça
                cobra.unshift(cabeca);
 
-               //remover o último elemento do vetor
-               //cobra.pop();
+               if(cabeca.x === comida.x && cabeca.x === comida.y){
+
+               }else{
+                cobra.pop();
+               }
+
                
                desenhar();                
             }
