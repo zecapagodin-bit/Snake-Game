@@ -1,0 +1,79 @@
+:root{
+  --caverna:#3B2417; --tronco:#6B4423; --tronco-claro:#8B5A2B; --floresta:#3B5D3A;
+  --mel:#E8960A; --mel-claro:#FFC94D; --texto-claro:#FBEFD9;
+}
+*{box-sizing:border-box}
+body{
+  margin:0; min-height:100vh; display:flex; align-items:center; justify-content:center;
+  padding:30px 16px; font-family:'Quicksand',sans-serif; overflow-x:hidden;
+  background:radial-gradient(circle at 20% 15%, rgba(255,201,77,.2), transparent 45%),
+             linear-gradient(180deg,#1A120B 0%,#241611 35%,#2B1B0E 100%);
+}
+body::before{
+  content:""; position:fixed; bottom:0; width:100%; height:200px; pointer-events:none; opacity:.55;
+  background-repeat:repeat-x; background-position:bottom;
+  background-image:
+    radial-gradient(ellipse 90px 150px at 10% 100%, #14100C 55%, transparent 58%),
+    radial-gradient(ellipse 110px 180px at 30% 100%, #14100C 55%, transparent 58%),
+    radial-gradient(ellipse 90px 140px at 55% 100%, #14100C 55%, transparent 58%),
+    radial-gradient(ellipse 110px 190px at 80% 100%, #14100C 55%, transparent 58%);
+}
+h1{font-family:'Baloo 2',sans-serif; font-weight:800; color:var(--caverna); font-size:2.1em; margin:0 0 12px}
+.container{
+  position:relative; z-index:1; text-align:center; max-width:460px; width:100%;
+  background:linear-gradient(180deg,#EFE1C4 0%,#E3D0A6 100%);
+  padding:24px 26px 20px; border-radius:26px; border:6px solid var(--tronco-claro);
+  box-shadow:0 18px 40px rgba(0,0,0,.5), inset 0 0 0 3px rgba(107,68,35,.25);
+}
+.container::before{content:"🐾"; position:absolute; font-size:28px; top:-16px; left:-14px; transform:rotate(-25deg)}
+.container::after{content:"🐾"; position:absolute; font-size:28px; bottom:-16px; right:-14px; transform:rotate(155deg)}
+
+.info{display:grid; grid-template-columns:repeat(4,1fr); gap:6px; font-weight:700; font-size:.9em; color:var(--tronco)}
+.info div{background:rgba(107,68,35,.1); border-radius:10px; padding:5px 2px}
+.info small{display:block; font-weight:600; opacity:.8}
+.info span{font-family:'Baloo 2',sans-serif; font-size:1.3em; color:var(--mel); -webkit-text-stroke:.6px #7a4d00}
+
+.dificuldade{display:flex; justify-content:center; gap:6px; margin:12px 0 0}
+.dificuldade button{padding:6px 14px; font-size:14px; background:#D8C6A0; border-bottom-color:#A88B72; color:var(--caverna)}
+.dificuldade button.ativo{background:linear-gradient(180deg,var(--mel-claro),var(--mel)); border-bottom-color:#A85E00; color:#4A2E00}
+
+#canvas{
+  border:4px solid var(--tronco-claro); border-radius:14px; background:#EFE3C8;
+  display:block; max-width:100%; height:auto; margin:14px auto; touch-action:none;
+  box-shadow:inset 0 0 0 2px rgba(255,255,255,.5), 0 8px 18px rgba(36,22,17,.4);
+}
+button{
+  font-family:'Baloo 2',sans-serif; font-size:16px; font-weight:700; cursor:pointer;
+  background:linear-gradient(180deg,var(--mel-claro),var(--mel)); color:#4A2E00;
+  padding:10px 20px; border:none; border-bottom:4px solid #A85E00; border-radius:12px; margin:4px;
+  transition:transform .15s ease, filter .15s ease;
+}
+button:hover{filter:brightness(1.08); transform:translateY(-1px)}
+button:active{transform:translateY(2px); border-bottom-width:2px}
+button:focus-visible,.tecla:focus-visible{outline:3px solid var(--floresta); outline-offset:2px}
+
+.teclas{display:grid; grid-template-columns:repeat(3,52px); gap:6px; justify-content:center; margin:12px auto 4px}
+.tecla{
+  width:52px; height:52px; display:flex; align-items:center; justify-content:center;
+  background:linear-gradient(180deg,var(--tronco-claro),var(--tronco)); color:#F3E7CC;
+  border:none; border-bottom:4px solid #40260f; border-radius:14px; font-size:20px; cursor:pointer; padding:0; margin:0;
+  user-select:none; -webkit-user-select:none;
+}
+.tecla:active{background:#40260f; transform:translateY(2px); border-bottom-width:2px}
+.tecla.vazio{background:transparent; border:none; cursor:default; visibility:hidden}
+
+.instrucoes{
+  margin-top:16px; padding:12px 16px; background:rgba(232,150,10,.15); border:2px dashed var(--mel);
+  border-radius:14px; font-size:14px; color:#6E4B00; text-align:left;
+}
+.instrucoes h3{margin:0 0 6px; color:var(--caverna); font-family:'Baloo 2',sans-serif}
+.instrucoes p{margin:3px 0}
+@media (max-width:600px){
+  h1{font-size:1.6em} .container{padding:20px 14px 16px} .info{font-size:.8em}
+}
+
+.voltar{
+  position:absolute; top:10px; left:16px; font-weight:700; font-size:.9em;
+  color:var(--tronco); text-decoration:none;
+}
+.voltar:hover,.voltar:focus-visible{text-decoration:underline}

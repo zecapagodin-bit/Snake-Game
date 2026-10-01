@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Jogo do Urso</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;700;800&family=Quicksand:wght@500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="container">
+  <a class="voltar" href="../../index.html">&larr; Portal</a>
+  <h1>&#128059; Jogo do Urso &#127855;</h1>
+
+  <div class="info">
+    <div>Pontos<small></small><span id="pontos">0</span></div>
+    <div>Nível<small></small><span id="nivel">1</span></div>
+    <div>Combo<small></small><span id="combo">x1</span></div>
+    <div>Recorde<small></small><span id="recorde">0</span></div>
+  </div>
+
+  <div class="dificuldade" id="dificuldade">
+    <button data-d="facil" onclick="mudarDificuldade('facil')">Fácil</button>
+    <button data-d="normal" onclick="mudarDificuldade('normal')">Normal</button>
+    <button data-d="dificil" onclick="mudarDificuldade('dificil')">Difícil</button>
+  </div>
+
+  <canvas id="canvas" width="400" height="400" aria-label="Área do jogo"></canvas>
+
+  <div>
+    <button onclick="iniciarJogo()">Iniciar Jogo</button>
+    <button onclick="pausarJogo()">Pausar / Continuar</button>
+    <button id="btnSom" onclick="alternarSom()">🔊</button>
+  </div>
+
+  <div class="teclas">
+    <div class="tecla vazio"></div>
+    <button class="tecla" onclick="mudarDirecao('cima')" aria-label="Cima">&#9650;</button>
+    <div class="tecla vazio"></div>
+    <button class="tecla" onclick="mudarDirecao('esquerda')" aria-label="Esquerda">&#9668;</button>
+    <button class="tecla" onclick="mudarDirecao('baixo')" aria-label="Baixo">&#9660;</button>
+    <button class="tecla" onclick="mudarDirecao('direita')" aria-label="Direita">&#9658;</button>
+  </div>
+
+  <div class="instrucoes">
+    <h3>Como Jogar:</h3>
+    <p>Setas, WASD, botões ou deslize o dedo na tela. Enter inicia, Espaço/P pausa.</p>
+    <p>Coma favos &#127855; para crescer. Comer em sequência rápida aumenta o combo (até x5).</p>
+    <p>O pote dourado &#127855; vale 5 pontos, mas some em poucos segundos.</p>
+    <p>Fácil: as paredes te levam ao outro lado. Difícil: aparecem pedras a cada nível.</p>
+  </div>
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>

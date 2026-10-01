@@ -3,536 +3,120 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Jogo do Urso</title>
+<title>Toca de Jogos</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;700;800&family=Quicksand:wght@500;600;700&display=swap" rel="stylesheet">
 <style>
 :root{
-  --caverna:#3B2417; --tronco:#6B4423; --tronco-claro:#8B5A2B; --floresta:#3B5D3A;
-  --mel:#E8960A; --mel-claro:#FFC94D; --texto-claro:#FBEFD9;
+  --caverna:#3B2417; --tronco:#6B4423; --tronco-claro:#8B5A2B;
+  --mel:#E8960A; --mel-claro:#FFC94D; --creme:#EFE1C4; --texto-claro:#FBEFD9;
 }
 *{box-sizing:border-box}
 body{
-  margin:0; min-height:100vh; display:flex; align-items:center; justify-content:center;
-  padding:30px 16px; font-family:'Quicksand',sans-serif; overflow-x:hidden;
-  background:radial-gradient(circle at 20% 15%, rgba(255,201,77,.2), transparent 45%),
-             linear-gradient(180deg,#1A120B 0%,#241611 35%,#2B1B0E 100%);
+  margin:0; min-height:100vh; font-family:'Quicksand',sans-serif; color:var(--texto-claro);
+  background:radial-gradient(circle at 20% 10%, rgba(255,201,77,.18), transparent 45%),
+             linear-gradient(180deg,#1A120B 0%,#241611 40%,#2B1B0E 100%);
 }
-body::before{
-  content:""; position:fixed; bottom:0; width:100%; height:200px; pointer-events:none; opacity:.55;
-  background-repeat:repeat-x; background-position:bottom;
-  background-image:
-    radial-gradient(ellipse 90px 150px at 10% 100%, #14100C 55%, transparent 58%),
-    radial-gradient(ellipse 110px 180px at 30% 100%, #14100C 55%, transparent 58%),
-    radial-gradient(ellipse 90px 140px at 55% 100%, #14100C 55%, transparent 58%),
-    radial-gradient(ellipse 110px 190px at 80% 100%, #14100C 55%, transparent 58%);
-}
-h1{font-family:'Baloo 2',sans-serif; font-weight:800; color:var(--caverna); font-size:2.1em; margin:0 0 12px}
-.container{
-  position:relative; z-index:1; text-align:center; max-width:460px; width:100%;
+header{text-align:center; padding:48px 16px 24px}
+h1{font-family:'Baloo 2',sans-serif; font-weight:800; font-size:2.8em; margin:0; text-shadow:0 3px 0 rgba(0,0,0,.35)}
+header p{margin:6px 0 0; font-size:1.1em; opacity:.85}
+
+main{max-width:900px; margin:0 auto; padding:16px 16px 60px}
+.grade{display:grid; grid-template-columns:repeat(auto-fill,minmax(240px,1fr)); gap:22px}
+
+.card{
+  display:flex; flex-direction:column; text-decoration:none; color:var(--caverna);
   background:linear-gradient(180deg,#EFE1C4 0%,#E3D0A6 100%);
-  padding:24px 26px 20px; border-radius:26px; border:6px solid var(--tronco-claro);
-  box-shadow:0 18px 40px rgba(0,0,0,.5), inset 0 0 0 3px rgba(107,68,35,.25);
+  border:5px solid var(--tronco-claro); border-radius:22px; overflow:hidden;
+  box-shadow:0 14px 30px rgba(0,0,0,.45), inset 0 0 0 3px rgba(107,68,35,.2);
+  transition:transform .18s ease, box-shadow .18s ease;
 }
-.container::before{content:"🐾"; position:absolute; font-size:28px; top:-16px; left:-14px; transform:rotate(-25deg)}
-.container::after{content:"🐾"; position:absolute; font-size:28px; bottom:-16px; right:-14px; transform:rotate(155deg)}
+a.card:hover, a.card:focus-visible{transform:translateY(-6px) rotate(-.6deg); box-shadow:0 20px 36px rgba(0,0,0,.55); outline:none}
+a.card:focus-visible{outline:3px solid var(--mel-claro); outline-offset:3px}
+.capa{
+  display:flex; align-items:center; justify-content:center; height:120px; font-size:64px;
+  background:linear-gradient(135deg,#6B4423,#3B2417);
+}
+.corpo{padding:14px 16px 16px; display:flex; flex-direction:column; gap:8px; flex:1}
+.corpo h2{margin:0; font-family:'Baloo 2',sans-serif; font-size:1.35em}
+.corpo p{margin:0; font-size:.95em; color:#5a3d22; flex:1}
+.tags{display:flex; gap:6px; flex-wrap:wrap}
+.tag{font-size:.78em; font-weight:700; padding:2px 10px; border-radius:20px; background:rgba(107,68,35,.15); color:var(--tronco)}
+.rodape{display:flex; justify-content:space-between; align-items:center; margin-top:4px}
+.recorde{font-weight:700; font-size:.9em; color:#7a4d00}
+.jogar{
+  font-family:'Baloo 2',sans-serif; font-weight:700; padding:6px 16px; border-radius:12px;
+  background:linear-gradient(180deg,var(--mel-claro),var(--mel)); border-bottom:3px solid #A85E00; color:#4A2E00;
+}
+.card.breve{opacity:.6; filter:grayscale(.5); cursor:default}
+.card.breve .capa{background:linear-gradient(135deg,#5b4a3d,#352a22)}
+.selo{font-family:'Baloo 2',sans-serif; font-weight:700; color:var(--tronco)}
 
-.info{display:grid; grid-template-columns:repeat(4,1fr); gap:6px; font-weight:700; font-size:.9em; color:var(--tronco)}
-.info div{background:rgba(107,68,35,.1); border-radius:10px; padding:5px 2px}
-.info small{display:block; font-weight:600; opacity:.8}
-.info span{font-family:'Baloo 2',sans-serif; font-size:1.3em; color:var(--mel); -webkit-text-stroke:.6px #7a4d00}
-
-.dificuldade{display:flex; justify-content:center; gap:6px; margin:12px 0 0}
-.dificuldade button{padding:6px 14px; font-size:14px; background:#D8C6A0; border-bottom-color:#A88B72; color:var(--caverna)}
-.dificuldade button.ativo{background:linear-gradient(180deg,var(--mel-claro),var(--mel)); border-bottom-color:#A85E00; color:#4A2E00}
-
-#canvas{
-  border:4px solid var(--tronco-claro); border-radius:14px; background:#EFE3C8;
-  display:block; max-width:100%; height:auto; margin:14px auto; touch-action:none;
-  box-shadow:inset 0 0 0 2px rgba(255,255,255,.5), 0 8px 18px rgba(36,22,17,.4);
-}
-button{
-  font-family:'Baloo 2',sans-serif; font-size:16px; font-weight:700; cursor:pointer;
-  background:linear-gradient(180deg,var(--mel-claro),var(--mel)); color:#4A2E00;
-  padding:10px 20px; border:none; border-bottom:4px solid #A85E00; border-radius:12px; margin:4px;
-  transition:transform .15s ease, filter .15s ease;
-}
-button:hover{filter:brightness(1.08); transform:translateY(-1px)}
-button:active{transform:translateY(2px); border-bottom-width:2px}
-button:focus-visible,.tecla:focus-visible{outline:3px solid var(--floresta); outline-offset:2px}
-
-.teclas{display:grid; grid-template-columns:repeat(3,52px); gap:6px; justify-content:center; margin:12px auto 4px}
-.tecla{
-  width:52px; height:52px; display:flex; align-items:center; justify-content:center;
-  background:linear-gradient(180deg,var(--tronco-claro),var(--tronco)); color:#F3E7CC;
-  border:none; border-bottom:4px solid #40260f; border-radius:14px; font-size:20px; cursor:pointer; padding:0; margin:0;
-  user-select:none; -webkit-user-select:none;
-}
-.tecla:active{background:#40260f; transform:translateY(2px); border-bottom-width:2px}
-.tecla.vazio{background:transparent; border:none; cursor:default; visibility:hidden}
-
-.instrucoes{
-  margin-top:16px; padding:12px 16px; background:rgba(232,150,10,.15); border:2px dashed var(--mel);
-  border-radius:14px; font-size:14px; color:#6E4B00; text-align:left;
-}
-.instrucoes h3{margin:0 0 6px; color:var(--caverna); font-family:'Baloo 2',sans-serif}
-.instrucoes p{margin:3px 0}
-@media (max-width:600px){
-  h1{font-size:1.6em} .container{padding:20px 14px 16px} .info{font-size:.8em}
-}
+footer{text-align:center; padding:20px; font-size:.9em; opacity:.6}
+@media (max-width:600px){ h1{font-size:2em} header{padding-top:32px} }
 </style>
 </head>
 <body>
-<div class="container">
-  <h1>&#128059; Jogo do Urso &#127855;</h1>
+<header>
+  <h1>🐾 Toca de Jogos 🍯</h1>
+  <p>Escolha um jogo e divirta-se!</p>
+</header>
 
-  <div class="info">
-    <div>Pontos<small></small><span id="pontos">0</span></div>
-    <div>Nível<small></small><span id="nivel">1</span></div>
-    <div>Combo<small></small><span id="combo">x1</span></div>
-    <div>Recorde<small></small><span id="recorde">0</span></div>
-  </div>
+<main>
+  <div class="grade" id="grade"></div>
+</main>
 
-  <div class="dificuldade" id="dificuldade">
-    <button data-d="facil" onclick="mudarDificuldade('facil')">Fácil</button>
-    <button data-d="normal" onclick="mudarDificuldade('normal')">Normal</button>
-    <button data-d="dificil" onclick="mudarDificuldade('dificil')">Difícil</button>
-  </div>
-
-  <canvas id="canvas" width="400" height="400" aria-label="Área do jogo"></canvas>
-
-  <div>
-    <button onclick="iniciarJogo()">Iniciar Jogo</button>
-    <button onclick="pausarJogo()">Pausar / Continuar</button>
-    <button id="btnSom" onclick="alternarSom()">🔊</button>
-  </div>
-
-  <div class="teclas">
-    <div class="tecla vazio"></div>
-    <button class="tecla" onclick="mudarDirecao('cima')" aria-label="Cima">&#9650;</button>
-    <div class="tecla vazio"></div>
-    <button class="tecla" onclick="mudarDirecao('esquerda')" aria-label="Esquerda">&#9668;</button>
-    <button class="tecla" onclick="mudarDirecao('baixo')" aria-label="Baixo">&#9660;</button>
-    <button class="tecla" onclick="mudarDirecao('direita')" aria-label="Direita">&#9658;</button>
-  </div>
-
-  <div class="instrucoes">
-    <h3>Como Jogar:</h3>
-    <p>Setas, WASD, botões ou deslize o dedo na tela. Enter inicia, Espaço/P pausa.</p>
-    <p>Coma favos &#127855; para crescer. Comer em sequência rápida aumenta o combo (até x5).</p>
-    <p>O pote dourado &#127855; vale 5 pontos, mas some em poucos segundos.</p>
-    <p>Fácil: as paredes te levam ao outro lado. Difícil: aparecem pedras a cada nível.</p>
-  </div>
-</div>
+<footer>Feito com HTML, CSS e JavaScript</footer>
 
 <script>
 //=============================
-// CONFIGURAÇÕES
+// CARDÁPIO: para adicionar um jogo, copie um bloco e edite
 //=============================
-const canvas = document.getElementById('canvas');
-const ctx = canvas.getContext('2d');
-const T = 20;                    // tamanho do quadrado
-const N = canvas.width / T;      // quadrados por lado
-const PONTOS_POR_NIVEL = 8;
-const JANELA_COMBO = 3000;       // ms para manter o combo
-const DURACAO_ESPECIAL = 5000;   // ms que o pote dourado fica na tela
+const JOGOS = [
+  {
+    titulo: 'Jogo do Urso',
+    descricao: 'Ajude o urso a comer favos de mel sem bater nas paredes. Três dificuldades, níveis e combos.',
+    emoji: '🐻',
+    url: 'jogos/cobrinha/index.html',
+    tags: ['Arcade', 'Clássico'],
+    chavesRecorde: ['urso_recorde_facil', 'urso_recorde_normal', 'urso_recorde_dificil']
+  },
+  { titulo: 'Jogo da Memória', descricao: 'Encontre os pares de cartas.', emoji: '🧠', emBreve: true },
+  { titulo: 'Pedra, Papel e Tesoura', descricao: 'Desafie o computador.', emoji: '✊', emBreve: true }
+];
 
-const DIFICULDADES = {
-  facil:   { vel: 200, atravessa: true,  pedras: false },
-  normal:  { vel: 150, atravessa: false, pedras: false },
-  dificil: { vel: 120, atravessa: false, pedras: true  }
-};
-const VETOR  = { cima:[0,-1], baixo:[0,1], esquerda:[-1,0], direita:[1,0] };
-const OPOSTO = { cima:'baixo', baixo:'cima', esquerda:'direita', direita:'esquerda' };
-
-//=============================
-// ESTADO
-//=============================
-let dificuldade = 'normal';
-let cobra = [], direcao = 'direita', fila = [];
-let comida = null, especial = null, pedras = [], popups = [];
-let pontos = 0, nivel = 1, combo = 1, ultimaComida = 0, contadorComidas = 0, recorde = 0;
-let estado = 'espera';           // espera | jogando | pausado | fim
-let timer = null, somLigado = true, audioCtx = null, mensagemFim = '';
-
-//=============================
-// RECORDE (um por dificuldade)
-//=============================
-function carregarRecorde(){
-  try { recorde = Number(localStorage.getItem('urso_recorde_' + dificuldade)) || 0; }
-  catch(e){ recorde = 0; }
-}
-function salvarRecorde(){
-  if(pontos > recorde){
-    recorde = pontos;
-    try { localStorage.setItem('urso_recorde_' + dificuldade, recorde); } catch(e){}
-  }
-}
-
-//=============================
-// SOM
-//=============================
-function som(freq, dur = 0.08, tipo = 'square'){
-  if(!somLigado) return;
+// pega o maior recorde salvo (o jogo salva um por dificuldade)
+function melhorRecorde(chaves = []){
   try{
-    audioCtx = audioCtx || new (window.AudioContext || window.webkitAudioContext)();
-    const o = audioCtx.createOscillator(), g = audioCtx.createGain();
-    o.type = tipo; o.frequency.value = freq; g.gain.value = 0.05;
-    o.connect(g); g.connect(audioCtx.destination);
-    o.start(); o.stop(audioCtx.currentTime + dur);
-  }catch(e){}
-}
-function alternarSom(){
-  somLigado = !somLigado;
-  document.getElementById('btnSom').textContent = somLigado ? '🔊' : '🔇';
+    const valores = chaves.map(c => Number(localStorage.getItem(c)) || 0);
+    return Math.max(0, ...valores);
+  }catch(e){ return 0; }
 }
 
-//=============================
-// CONTROLE DO JOGO
-//=============================
-function resetar(){
-  cobra = [{x:10,y:10},{x:9,y:10},{x:8,y:10}];
-  direcao = 'direita'; fila = [];
-  pontos = 0; nivel = 1; combo = 1; ultimaComida = 0; contadorComidas = 0;
-  especial = null; pedras = []; popups = []; comida = null;
-  carregarRecorde();
-  gerarComida();
-  atualizarPainel();
+function criarCard(jogo){
+  const el = document.createElement(jogo.emBreve ? 'div' : 'a');
+  el.className = 'card' + (jogo.emBreve ? ' breve' : '');
+  if(!jogo.emBreve) el.href = jogo.url;
+
+  const rec = melhorRecorde(jogo.chavesRecorde);
+  const tags = (jogo.tags || []).map(t => `<span class="tag">${t}</span>`).join('');
+  const rodape = jogo.emBreve
+    ? `<span class="selo">Em breve</span>`
+    : `<span class="recorde">${rec > 0 ? 'Recorde: ' + rec : 'Novo por aqui?'}</span><span class="jogar">Jogar</span>`;
+
+  el.innerHTML = `
+    <div class="capa" aria-hidden="true">${jogo.emoji}</div>
+    <div class="corpo">
+      <h2>${jogo.titulo}</h2>
+      <p>${jogo.descricao}</p>
+      <div class="tags">${tags}</div>
+      <div class="rodape">${rodape}</div>
+    </div>`;
+  return el;
 }
 
-function mudarDificuldade(d){
-  dificuldade = d;
-  clearTimeout(timer);
-  estado = 'espera';
-  document.querySelectorAll('#dificuldade button').forEach(b =>
-    b.classList.toggle('ativo', b.dataset.d === d));
-  resetar();
-}
-
-function iniciarJogo(){
-  clearTimeout(timer);
-  resetar();
-  estado = 'jogando';
-  agendar();
-}
-
-function velocidade(){
-  return Math.max(60, DIFICULDADES[dificuldade].vel - (nivel - 1) * 10);
-}
-
-// setTimeout encadeado: permite mudar a velocidade a cada nível
-function agendar(){
-  clearTimeout(timer);
-  timer = setTimeout(() => {
-    atualizarJogo();
-    if(estado === 'jogando') agendar();
-  }, velocidade());
-}
-
-function pausarJogo(){
-  if(estado === 'jogando'){
-    estado = 'pausado';
-    clearTimeout(timer);
-  } else if(estado === 'pausado'){
-    estado = 'jogando';
-    agendar();
-  }
-}
-
-//=============================
-// LÓGICA (um passo do jogo)
-//=============================
-function atualizarJogo(){
-  if(fila.length) direcao = fila.shift();
-
-  const cfg = DIFICULDADES[dificuldade];
-  const cabeca = { x: cobra[0].x + VETOR[direcao][0], y: cobra[0].y + VETOR[direcao][1] };
-
-  if(cfg.atravessa){
-    cabeca.x = (cabeca.x + N) % N;
-    cabeca.y = (cabeca.y + N) % N;
-  } else if(cabeca.x < 0 || cabeca.x >= N || cabeca.y < 0 || cabeca.y >= N){
-    return fimDeJogo();
-  }
-
-  const comeuMel = comida && cabeca.x === comida.x && cabeca.y === comida.y;
-  const comeuEsp = especial && cabeca.x === especial.x && cabeca.y === especial.y;
-  const crescendo = comeuMel || comeuEsp;
-
-  // se não vai crescer, a ponta do rabo sai do lugar, então pode ser pisada
-  const corpo = crescendo ? cobra : cobra.slice(0, -1);
-  const bateu = corpo.some(p => p.x === cabeca.x && p.y === cabeca.y) ||
-                pedras.some(p => p.x === cabeca.x && p.y === cabeca.y);
-  if(bateu) return fimDeJogo();
-
-  cobra.unshift(cabeca);
-
-  if(crescendo){
-    const agora = Date.now();
-    combo = (agora - ultimaComida < JANELA_COMBO) ? Math.min(combo + 1, 5) : 1;
-    ultimaComida = agora;
-
-    const ganho = (comeuEsp ? 5 : 1) * combo;
-    pontos += ganho;
-    popups.push({ x: cabeca.x, y: cabeca.y, texto: '+' + ganho, nasc: agora, cor: comeuEsp ? '#C97B00' : '#3B5D3A' });
-    som(comeuEsp ? 880 : 520 + combo * 60);
-
-    if(comeuEsp) especial = null;
-    if(comeuMel){
-      contadorComidas++;
-      gerarComida();
-      if(contadorComidas % 5 === 0) gerarEspecial();
-    }
-
-    const novoNivel = 1 + Math.floor(pontos / PONTOS_POR_NIVEL);
-    if(novoNivel > nivel){
-      nivel = novoNivel;
-      popups.push({ x: 7, y: 9, texto: 'Nível ' + nivel + '!', nasc: Date.now(), cor: '#8B5A2B', grande: true });
-      som(700, 0.25, 'triangle');
-      if(cfg.pedras) gerarPedra();
-    }
-    salvarRecorde();
-  } else {
-    cobra.pop();
-  }
-
-  if(especial && Date.now() > especial.expira) especial = null;
-  atualizarPainel();
-}
-
-function fimDeJogo(venceu = false){
-  estado = 'fim';
-  clearTimeout(timer);
-  mensagemFim = venceu ? 'VOCÊ VENCEU!' : 'FIM DE JOGO';
-  salvarRecorde();
-  atualizarPainel();
-  som(venceu ? 880 : 140, 0.4, venceu ? 'triangle' : 'sawtooth');
-}
-
-//=============================
-// POSIÇÕES LIVRES
-//=============================
-function celulasLivres(){
-  const ocupadas = new Set();
-  [...cobra, ...pedras, comida, especial].forEach(p => { if(p) ocupadas.add(p.x + ',' + p.y); });
-  const livres = [];
-  for(let x = 0; x < N; x++)
-    for(let y = 0; y < N; y++)
-      if(!ocupadas.has(x + ',' + y)) livres.push({x, y});
-  return livres;
-}
-function sortear(lista){ return lista[Math.floor(Math.random() * lista.length)]; }
-
-function gerarComida(){
-  const livres = celulasLivres();
-  if(!livres.length){ fimDeJogo(true); return; }
-  comida = sortear(livres);
-}
-function gerarEspecial(){
-  const livres = celulasLivres();
-  if(livres.length) especial = { ...sortear(livres), expira: Date.now() + DURACAO_ESPECIAL };
-}
-function gerarPedra(){
-  // nunca nasce perto da cabeça, para não ser injusto
-  const h = cobra[0];
-  const livres = celulasLivres().filter(p => Math.abs(p.x - h.x) + Math.abs(p.y - h.y) > 5);
-  if(livres.length) pedras.push(sortear(livres));
-}
-
-//=============================
-// ENTRADA
-//=============================
-function mudarDirecao(nova){
-  const ultima = fila.length ? fila[fila.length - 1] : direcao;
-  if(nova !== ultima && nova !== OPOSTO[ultima] && fila.length < 2) fila.push(nova);
-}
-
-document.addEventListener('keydown', function(e){
-  const mapa = { ArrowUp:'cima', w:'cima', W:'cima', ArrowDown:'baixo', s:'baixo', S:'baixo',
-                 ArrowLeft:'esquerda', a:'esquerda', A:'esquerda', ArrowRight:'direita', d:'direita', D:'direita' };
-  if(mapa[e.key]){ e.preventDefault(); mudarDirecao(mapa[e.key]); }
-  else if(e.key === ' ' || e.key === 'p' || e.key === 'P'){ e.preventDefault(); pausarJogo(); }
-  else if(e.key === 'Enter' && estado !== 'jogando'){ e.preventDefault(); iniciarJogo(); }
-});
-
-// deslizar o dedo no canvas
-let toqueIni = null;
-canvas.addEventListener('touchstart', e => { toqueIni = e.touches[0]; }, { passive: true });
-canvas.addEventListener('touchend', e => {
-  if(!toqueIni) return;
-  const t = e.changedTouches[0];
-  const dx = t.clientX - toqueIni.clientX, dy = t.clientY - toqueIni.clientY;
-  toqueIni = null;
-  if(Math.max(Math.abs(dx), Math.abs(dy)) < 20) return;
-  if(Math.abs(dx) > Math.abs(dy)) mudarDirecao(dx > 0 ? 'direita' : 'esquerda');
-  else mudarDirecao(dy > 0 ? 'baixo' : 'cima');
-});
-
-//=============================
-// PAINEL
-//=============================
-function atualizarPainel(){
-  document.getElementById('pontos').textContent = pontos;
-  document.getElementById('nivel').textContent = nivel;
-  document.getElementById('recorde').textContent = recorde;
-}
-
-//=============================
-// DESENHO (loop próprio, independe da velocidade do jogo)
-//=============================
-function retanguloArredondado(x, y, w, h, r){
-  ctx.beginPath();
-  ctx.moveTo(x + r, y);
-  ctx.arcTo(x + w, y, x + w, y + h, r);
-  ctx.arcTo(x + w, y + h, x, y + h, r);
-  ctx.arcTo(x, y + h, x, y, r);
-  ctx.arcTo(x, y, x + w, y, r);
-  ctx.closePath();
-}
-
-function desenharFundo(){
-  ctx.fillStyle = '#EFE3C8';
-  ctx.fillRect(0, 0, canvas.width, canvas.height);
-  ctx.strokeStyle = '#D8C6A0';
-  ctx.lineWidth = 0.5;
-  ctx.beginPath();
-  for(let i = 0; i <= N; i++){
-    ctx.moveTo(i * T, 0); ctx.lineTo(i * T, canvas.height);
-    ctx.moveTo(0, i * T); ctx.lineTo(canvas.width, i * T);
-  }
-  ctx.stroke();
-}
-
-function desenharCorpo(p, i){
-  const x = p.x * T + 1, y = p.y * T + 1, t = T - 2, cx = x + t / 2, cy = y + t / 2;
-  const par = i % 2 === 0;
-  const g = ctx.createRadialGradient(cx - 3, cy - 3, 1, cx, cy, T / 2);
-  g.addColorStop(0, par ? '#8B5A2B' : '#6B4423');
-  g.addColorStop(1, par ? '#5C3A1E' : '#42280F');
-  ctx.fillStyle = g;
-  retanguloArredondado(x, y, t, t, 8);
-  ctx.fill();
-}
-
-function desenharCabeca(p){
-  const cx = p.x * T + T / 2, cy = p.y * T + T / 2, r = T / 2;
-  const [dx, dy] = VETOR[direcao];
-  const px = -dy, py = dx;
-
-  ctx.fillStyle = '#5C3A1E'; // orelhas
-  [1, -1].forEach(s => {
-    ctx.beginPath();
-    ctx.arc(cx - dx * r * .3 + px * s * r * .75, cy - dy * r * .3 + py * s * r * .75, r * .35, 0, Math.PI * 2);
-    ctx.fill();
-  });
-
-  const g = ctx.createRadialGradient(cx - 3, cy - 3, 1, cx, cy, r + 1);
-  g.addColorStop(0, '#8B5A2B'); g.addColorStop(1, '#42280F');
-  ctx.fillStyle = g;
-  ctx.beginPath(); ctx.arc(cx, cy, r, 0, Math.PI * 2); ctx.fill();
-
-  const ang = Math.atan2(dy, dx);
-  ctx.fillStyle = '#D9B48C'; // focinho
-  ctx.beginPath(); ctx.ellipse(cx + dx * r * .7, cy + dy * r * .7, r * .55, r * .42, ang, 0, Math.PI * 2); ctx.fill();
-  ctx.fillStyle = '#1A1A1A'; // nariz
-  ctx.beginPath(); ctx.ellipse(cx + dx * (r + 2), cy + dy * (r + 2), 2.4, 1.7, ang, 0, Math.PI * 2); ctx.fill();
-
-  [1, -1].forEach(s => { // olhos
-    const ox = cx + dx + px * 4 * s, oy = cy + dy + py * 4 * s;
-    ctx.fillStyle = '#fff'; ctx.beginPath(); ctx.arc(ox, oy, 2, 0, Math.PI * 2); ctx.fill();
-    ctx.fillStyle = '#111'; ctx.beginPath(); ctx.arc(ox + dx * .6, oy + dy * .6, 1, 0, Math.PI * 2); ctx.fill();
-  });
-}
-
-function hexagono(cx, cy, raio){
-  ctx.beginPath();
-  for(let i = 0; i < 6; i++){
-    const a = Math.PI / 3 * i - Math.PI / 2;
-    const px = cx + raio * Math.cos(a), py = cy + raio * Math.sin(a);
-    if(i === 0) ctx.moveTo(px, py); else ctx.lineTo(px, py);
-  }
-  ctx.closePath();
-}
-
-function desenharMel(){
-  const cx = comida.x * T + T / 2, cy = comida.y * T + T / 2;
-  const pulso = 1 + Math.sin(Date.now() / 250) * 0.06;
-  const r = (T / 2 - 2) * pulso;
-  const g = ctx.createRadialGradient(cx - 2, cy - 2, 1, cx, cy, r + 2);
-  g.addColorStop(0, '#FFD166'); g.addColorStop(.6, '#F4A300'); g.addColorStop(1, '#C97B00');
-  ctx.fillStyle = g; hexagono(cx, cy, r); ctx.fill();
-  ctx.strokeStyle = '#A85E00'; ctx.lineWidth = 1; ctx.stroke();
-  ctx.strokeStyle = 'rgba(168,94,0,.5)'; ctx.lineWidth = .6; hexagono(cx, cy, r * .5); ctx.stroke();
-  ctx.fillStyle = 'rgba(255,255,255,.5)';
-  ctx.beginPath(); ctx.ellipse(cx - r / 3, cy - r / 3, r / 5, r / 8, -Math.PI / 5, 0, Math.PI * 2); ctx.fill();
-}
-
-function desenharEspecial(){
-  const restante = especial.expira - Date.now();
-  if(restante < 1500 && Math.floor(Date.now() / 150) % 2) return; // pisca antes de sumir
-  const cx = especial.x * T + T / 2, cy = especial.y * T + T / 2;
-  ctx.fillStyle = 'rgba(255,201,77,.45)';
-  ctx.beginPath(); ctx.arc(cx, cy, T / 2 + Math.sin(Date.now() / 120) * 2, 0, Math.PI * 2); ctx.fill();
-  ctx.font = '16px Arial'; ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
-  ctx.fillStyle = '#000';
-  ctx.fillText('🍯', cx, cy + 1);
-}
-
-function desenharPedra(p){
-  const x = p.x * T + 1, y = p.y * T + 1, t = T - 2;
-  ctx.fillStyle = '#6E5849'; retanguloArredondado(x, y, t, t, 6); ctx.fill();
-  ctx.fillStyle = '#A88B72'; retanguloArredondado(x + 2, y + 2, t - 8, t - 10, 3); ctx.fill();
-}
-
-function desenharPopups(){
-  const agora = Date.now();
-  popups = popups.filter(p => agora - p.nasc < 900);
-  popups.forEach(p => {
-    const k = (agora - p.nasc) / 900;
-    ctx.globalAlpha = 1 - k;
-    ctx.fillStyle = p.cor;
-    ctx.font = (p.grande ? 'bold 28px' : 'bold 16px') + ' "Baloo 2", Arial';
-    ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
-    ctx.fillText(p.texto, p.x * T + T / 2, p.y * T - k * 24);
-  });
-  ctx.globalAlpha = 1;
-}
-
-function sobreposicao(titulo, subtitulo, cor = '#FFC94D'){
-  ctx.fillStyle = 'rgba(36,22,17,.8)';
-  ctx.fillRect(0, 0, canvas.width, canvas.height);
-  ctx.textAlign = 'center'; ctx.textBaseline = 'alphabetic';
-  ctx.fillStyle = cor; ctx.font = 'bold 38px "Baloo 2", Arial';
-  ctx.fillText(titulo, canvas.width / 2, canvas.height / 2 - 6);
-  ctx.fillStyle = '#FBEFD9'; ctx.font = '18px Quicksand, Arial';
-  ctx.fillText(subtitulo, canvas.width / 2, canvas.height / 2 + 28);
-}
-
-function desenhar(){
-  desenharFundo();
-  pedras.forEach(desenharPedra);
-  if(comida) desenharMel();
-  if(especial) desenharEspecial();
-  for(let i = cobra.length - 1; i >= 1; i--) desenharCorpo(cobra[i], i);
-  desenharCabeca(cobra[0]);
-  desenharPopups();
-
-  // combo na tela de info expira sozinho
-  const comboAtivo = (estado === 'jogando' && Date.now() - ultimaComida < JANELA_COMBO) ? combo : 1;
-  document.getElementById('combo').textContent = 'x' + comboAtivo;
-
-  if(estado === 'espera') sobreposicao('Pronto?', 'Aperte Enter ou "Iniciar Jogo"');
-  else if(estado === 'pausado') sobreposicao('PAUSADO', 'Espaço para continuar', '#FBEFD9');
-  else if(estado === 'fim') sobreposicao(mensagemFim, 'Pontos: ' + pontos + '  •  Nível ' + nivel + '  •  Enter para jogar de novo');
-
-  requestAnimationFrame(desenhar);
-}
-
-//=============================
-// INÍCIO
-//=============================
-mudarDificuldade('normal');
-requestAnimationFrame(desenhar);
+const grade = document.getElementById('grade');
+JOGOS.forEach(j => grade.appendChild(criarCard(j)));
 </script>
 </body>
 </html>
