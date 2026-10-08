@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+  <title>Blocos de Mel · Toca de Jogos</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <main class="jogo">
+    <header class="topo">
+      <a class="voltar" href="../../index.html">← Portal</a>
+      <h1>Blocos de Mel</h1>
+    </header>
+
+    <div class="area">
+      <div class="tabuleiro-wrap">
+        <canvas id="tabuleiro" width="300" height="600" aria-label="Tabuleiro do jogo"></canvas>
+        <div id="tela" class="tela" role="dialog" aria-live="polite">
+          <h2 id="telaTitulo">Pronto?</h2>
+          <p id="telaTexto">Encaixe os blocos e complete linhas.</p>
+          <button id="btnIniciar" class="principal">Jogar (Enter)</button>
+        </div>
+      </div>
+
+      <aside class="painel">
+        <section class="caixa">
+          <h3>Pontos</h3>
+          <p class="valor" id="pontos">0</p>
+        </section>
+        <section class="caixa dupla">
+          <div><h3>Nível</h3><p class="valor" id="nivel">1</p></div>
+          <div><h3>Linhas</h3><p class="valor" id="linhas">0</p></div>
+        </section>
+        <section class="caixa">
+          <h3>Recorde</h3>
+          <p class="valor" id="recorde">0</p>
+        </section>
+        <section class="caixa">
+          <h3>Próximo</h3>
+          <canvas id="proximo" width="96" height="96"></canvas>
+        </section>
+        <section class="caixa">
+          <h3>Guardado</h3>
+          <canvas id="guardado" width="96" height="96"></canvas>
+        </section>
+        <button id="btnPausar" class="secundario">Pausar (P)</button>
+      </aside>
+    </div>
+
+    <div class="controles" aria-label="Controles de toque">
+      <button data-acao="esq" aria-label="Esquerda">◀</button>
+      <button data-acao="giro" aria-label="Girar">⟳</button>
+      <button data-acao="dir" aria-label="Direita">▶</button>
+      <button data-acao="guardar" aria-label="Guardar peça">Guardar</button>
+      <button data-acao="baixo" aria-label="Descer">▼</button>
+      <button data-acao="queda" aria-label="Queda rápida">Queda</button>
+    </div>
+
+    <p class="dica">Setas ou WASD movem · ↑/X gira · Z gira ao contrário · Espaço derruba · C guarda · P pausa</p>
+  </main>
+  <script src="script.js"></script>
+</body>
+</html>
