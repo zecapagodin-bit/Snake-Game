@@ -1,125 +1,513 @@
 <!DOCTYPE html>
 <html lang="pt-br">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Toca de Jogos</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;700;800&family=Quicksand:wght@500;600;700&display=swap" rel="stylesheet">
-<style>
-:root{
-  --caverna:#3B2417; --tronco:#6B4423; --tronco-claro:#8B5A2B;
-  --mel:#E8960A; --mel-claro:#FFC94D; --creme:#EFE1C4; --texto-claro:#FBEFD9;
-}
-*{box-sizing:border-box}
-body{
-  margin:0; min-height:100vh; font-family:'Quicksand',sans-serif; color:var(--texto-claro);
-  background:radial-gradient(circle at 20% 10%, rgba(255,201,77,.18), transparent 45%),
-             linear-gradient(180deg,#1A120B 0%,#241611 40%,#2B1B0E 100%);
-}
-header{text-align:center; padding:48px 16px 24px}
-h1{font-family:'Baloo 2',sans-serif; font-weight:800; font-size:2.8em; margin:0; text-shadow:0 3px 0 rgba(0,0,0,.35)}
-header p{margin:6px 0 0; font-size:1.1em; opacity:.85}
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="description" content="Portal de jogos feitos em HTML, CSS e JavaScript. Escolha um jogo e jogue direto no navegador.">
+        <title>Portal de Jogos</title>
 
-main{max-width:900px; margin:0 auto; padding:16px 16px 60px}
-.grade{display:grid; grid-template-columns:repeat(auto-fill,minmax(240px,1fr)); gap:22px}
+        <!-- Fonte só do título. Se não carregar, o navegador usa "monospace". -->
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
 
-.card{
-  display:flex; flex-direction:column; text-decoration:none; color:var(--caverna);
-  background:linear-gradient(180deg,#EFE1C4 0%,#E3D0A6 100%);
-  border:5px solid var(--tronco-claro); border-radius:22px; overflow:hidden;
-  box-shadow:0 14px 30px rgba(0,0,0,.45), inset 0 0 0 3px rgba(107,68,35,.2);
-  transition:transform .18s ease, box-shadow .18s ease;
-}
-a.card:hover, a.card:focus-visible{transform:translateY(-6px) rotate(-.6deg); box-shadow:0 20px 36px rgba(0,0,0,.55); outline:none}
-a.card:focus-visible{outline:3px solid var(--mel-claro); outline-offset:3px}
-.capa{
-  display:flex; align-items:center; justify-content:center; height:120px; font-size:64px;
-  background:linear-gradient(135deg,#6B4423,#3B2417);
-}
-.corpo{padding:14px 16px 16px; display:flex; flex-direction:column; gap:8px; flex:1}
-.corpo h2{margin:0; font-family:'Baloo 2',sans-serif; font-size:1.35em}
-.corpo p{margin:0; font-size:.95em; color:#5a3d22; flex:1}
-.tags{display:flex; gap:6px; flex-wrap:wrap}
-.tag{font-size:.78em; font-weight:700; padding:2px 10px; border-radius:20px; background:rgba(107,68,35,.15); color:var(--tronco)}
-.rodape{display:flex; justify-content:space-between; align-items:center; margin-top:4px}
-.recorde{font-weight:700; font-size:.9em; color:#7a4d00}
-.jogar{
-  font-family:'Baloo 2',sans-serif; font-weight:700; padding:6px 16px; border-radius:12px;
-  background:linear-gradient(180deg,var(--mel-claro),var(--mel)); border-bottom:3px solid #A85E00; color:#4A2E00;
-}
-.card.breve{opacity:.6; filter:grayscale(.5); cursor:default}
-.card.breve .capa{background:linear-gradient(135deg,#5b4a3d,#352a22)}
-.selo{font-family:'Baloo 2',sans-serif; font-weight:700; color:var(--tronco)}
+        <style>
+            /* =========================================
+               PORTAL DE JOGOS - estilos da página inicial
+               ========================================= */
 
-footer{text-align:center; padding:20px; font-size:.9em; opacity:.6}
-@media (max-width:600px){ h1{font-size:2em} header{padding-top:32px} }
-</style>
-</head>
-<body>
-<header>
-  <h1>🐾 Toca de Jogos 🍯</h1>
-  <p>Escolha um jogo e divirta-se!</p>
-</header>
+            :root {
+                --fundo: #14122b;
+                --superficie: #1f1b45;
+                --superficie-clara: #2a2560;
+                --borda: #3a3478;
+                --texto: #f2f0ff;
+                --texto-suave: #b9b4e6;
+                --destaque: #b8f34a;      /* verde da cobrinha */
+                --destaque-texto: #14122b;
+            }
 
-<main>
-  <div class="grade" id="grade"></div>
-</main>
+            * {
+                box-sizing: border-box;
+            }
 
-<footer>Feito com HTML, CSS e JavaScript</footer>
+            body {
+                margin: 0;
+                min-height: 100vh;
+                display: flex;
+                flex-direction: column;
+                background-color: var(--fundo);
+                color: var(--texto);
+                font-family: system-ui, -apple-system, 'Segoe UI', Roboto, Arial, sans-serif;
+                line-height: 1.5;
+            }
 
-<script>
-//=============================
-// CARDÁPIO: para adicionar um jogo, copie um bloco e edite
-//=============================
-const JOGOS = [
-  {
-    titulo: 'Jogo do Urso',
-    descricao: 'Ajude o urso a comer favos de mel sem bater nas paredes. Três dificuldades, níveis e combos.',
-    emoji: '🐻',
-    url: 'jogos/cobrinha',
-    tags: ['Arcade', 'Clássico'],
-    chavesRecorde: ['urso_recorde_facil', 'urso_recorde_normal', 'urso_recorde_dificil']
-  },
-  {
-    url: 'jogos/tetris',
-  },
-  { titulo: 'Jogo da Memória', descricao: 'Encontre os pares de cartas.', emoji: '🧠', emBreve: true },
-  { titulo: 'Pedra, Papel e Tesoura', descricao: 'Desafie o computador.', emoji: '✊', emBreve: true }
-];
+            /* ---------- TOPO ---------- */
+            .topo,
+            main,
+            .rodape {
+                width: 100%;
+                max-width: 960px;
+                margin: 0 auto;
+                padding-left: 20px;
+                padding-right: 20px;
+            }
 
-// pega o maior recorde salvo (o jogo salva um por dificuldade)
-function melhorRecorde(chaves = []){
-  try{
-    const valores = chaves.map(c => Number(localStorage.getItem(c)) || 0);
-    return Math.max(0, ...valores);
-  }catch(e){ return 0; }
-}
+            .topo {
+                padding-top: 56px;
+                padding-bottom: 24px;
+            }
 
-function criarCard(jogo){
-  const el = document.createElement(jogo.emBreve ? 'div' : 'a');
-  el.className = 'card' + (jogo.emBreve ? ' breve' : '');
-  if(!jogo.emBreve) el.href = jogo.url;
+            .topo h1 {
+                margin: 0 0 16px;
+                font-family: 'Press Start 2P', monospace;
+                font-size: clamp(1.4rem, 5vw, 2.4rem);
+                line-height: 1.3;
+                font-weight: normal;
+                color: var(--destaque);
+            }
 
-  const rec = melhorRecorde(jogo.chavesRecorde);
-  const tags = (jogo.tags || []).map(t => `<span class="tag">${t}</span>`).join('');
-  const rodape = jogo.emBreve
-    ? `<span class="selo">Em breve</span>`
-    : `<span class="recorde">${rec > 0 ? 'Recorde: ' + rec : 'Novo por aqui?'}</span><span class="jogar">Jogar</span>`;
+            .topo p {
+                margin: 0;
+                max-width: 52ch;
+                font-size: 1.1rem;
+                color: var(--texto-suave);
+            }
 
-  el.innerHTML = `
-    <div class="capa" aria-hidden="true">${jogo.emoji}</div>
-    <div class="corpo">
-      <h2>${jogo.titulo}</h2>
-      <p>${jogo.descricao}</p>
-      <div class="tags">${tags}</div>
-      <div class="rodape">${rodape}</div>
-    </div>`;
-  return el;
-}
+            /* ---------- CARDÁPIO ---------- */
+            main {
+                flex: 1;
+                padding-bottom: 48px;
+            }
 
-const grade = document.getElementById('grade');
-JOGOS.forEach(j => grade.appendChild(criarCard(j)));
-</script>
-</body>
+            .titulo-secao {
+                margin: 32px 0 16px;
+                font-size: 1.2rem;
+                color: var(--texto);
+            }
+
+            .cardapio {
+                list-style: none;
+                margin: 0;
+                padding: 0;
+                display: grid;
+                grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+                gap: 20px;
+            }
+
+            .jogo {
+                display: flex;
+                flex-direction: column;
+                height: 100%;
+                overflow: hidden;
+                background-color: var(--superficie);
+                border: 2px solid var(--borda);
+                border-radius: 14px;
+                color: inherit;
+                text-decoration: none;
+                transition: transform 0.15s ease, border-color 0.15s ease;
+            }
+
+            a.jogo:hover {
+                transform: translateY(-4px);
+                border-color: var(--destaque);
+            }
+
+            a.jogo:focus-visible {
+                outline: 3px solid var(--destaque);
+                outline-offset: 3px;
+            }
+
+            .miniatura {
+                display: block;
+                width: 100%;
+                aspect-ratio: 16 / 10;
+                background-color: #1f2d3d;
+            }
+
+            .jogo-corpo {
+                display: flex;
+                flex-direction: column;
+                flex: 1;
+                padding: 16px;
+            }
+
+            .jogo-corpo h3 {
+                margin: 0 0 6px;
+                font-size: 1.25rem;
+            }
+
+            .jogo-corpo p {
+                margin: 0 0 12px;
+                color: var(--texto-suave);
+                font-size: 0.95rem;
+            }
+
+            .etiquetas {
+                list-style: none;
+                margin: 0 0 16px;
+                padding: 0;
+                display: flex;
+                flex-wrap: wrap;
+                gap: 6px;
+            }
+
+            .etiquetas li {
+                padding: 2px 10px;
+                border-radius: 999px;
+                background-color: var(--superficie-clara);
+                font-size: 0.8rem;
+                color: var(--texto-suave);
+            }
+
+            /* botão "Jogar" fica sempre no pé do card */
+            .jogar {
+                margin-top: auto;
+                align-self: flex-start;
+                padding: 8px 20px;
+                border-radius: 8px;
+                background-color: var(--destaque);
+                color: var(--destaque-texto);
+                font-weight: bold;
+            }
+
+            /* ---------- CARD "EM BREVE" ---------- */
+            .jogo.em-breve {
+                border-style: dashed;
+                opacity: 0.7;
+            }
+
+            .miniatura.vazia {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                background-color: var(--superficie-clara);
+                font-family: 'Press Start 2P', monospace;
+                font-size: 2rem;
+                color: var(--borda);
+            }
+
+            .em-breve .jogar {
+                background-color: transparent;
+                border: 2px solid var(--borda);
+                color: var(--texto-suave);
+                padding: 6px 18px;
+            }
+
+            /* ---------- RODAPÉ ---------- */
+            .rodape {
+                padding-top: 20px;
+                padding-bottom: 28px;
+                border-top: 1px solid var(--borda);
+                font-size: 0.9rem;
+                color: var(--texto-suave);
+            }
+
+            .rodape p {
+                margin: 0;
+            }
+
+            .rodape a {
+                color: var(--destaque);
+            }
+
+            /* ---------- ACESSIBILIDADE ---------- */
+            @media (prefers-reduced-motion: reduce) {
+                .jogo {
+                    transition: none;
+                }
+                a.jogo:hover {
+                    transform: none;
+                }
+            }
+
+            @media (max-width: 600px) {
+                .topo {
+                    padding-top: 36px;
+                }
+            }
+        </style>
+    </head>
+    <body>
+
+        <header class="topo">
+            <h1>Portal de Jogos</h1>
+            <p>Jogos feitos em HTML, CSS e JavaScript. Escolha um e jogue direto no navegador, no computador ou no celular.</p>
+        </header>
+
+        <main>
+            <h2 class="titulo-secao">Cardápio</h2>
+
+            <ul class="cardapio">
+
+                <!-- ===== JOGO: COBRINHA ===== -->
+                <li>
+                    <a class="jogo" href="jogos/cobrinha/">
+                        <svg class="miniatura" viewBox="0 0 160 100" aria-hidden="true" focusable="false">
+                            <defs>
+                                <pattern id="xadrez" width="40" height="40" patternUnits="userSpaceOnUse">
+                                    <rect width="40" height="40" fill="#1f2d3d"/>
+                                    <rect width="20" height="20" fill="#243447"/>
+                                    <rect x="20" y="20" width="20" height="20" fill="#243447"/>
+                                </pattern>
+                            </defs>
+                            <rect width="160" height="100" fill="url(#xadrez)"/>
+
+                            <!-- corpo da cobra -->
+                            <rect x="21" y="61" width="18" height="18" rx="5" fill="#2f8f4e"/>
+                            <rect x="41" y="61" width="18" height="18" rx="5" fill="#35a057"/>
+                            <rect x="61" y="61" width="18" height="18" rx="5" fill="#3cb263"/>
+                            <rect x="61" y="41" width="18" height="18" rx="5" fill="#44c46f"/>
+                            <rect x="81" y="41" width="18" height="18" rx="5" fill="#4fd57b"/>
+                            <!-- cabeça -->
+                            <rect x="101" y="41" width="18" height="18" rx="5" fill="#7be495"/>
+                            <circle cx="114" cy="46" r="3" fill="#fff"/><circle cx="114" cy="46" r="1.5" fill="#111"/>
+                            <circle cx="114" cy="54" r="3" fill="#fff"/><circle cx="114" cy="54" r="1.5" fill="#111"/>
+
+                            <!-- maçã -->
+                            <circle cx="150" cy="31" r="7" fill="#e63946"/>
+                            <circle cx="147" cy="28" r="1.8" fill="rgba(255,255,255,0.6)"/>
+                        </svg>
+
+                        <div class="jogo-corpo">
+                            <h3>Cobrinha</h3>
+                            <p>O clássico da cobra que cresce ao comer maçãs. Tem níveis, combos, itens especiais e três dificuldades.</p>
+                            <ul class="etiquetas">
+                                <li>Clássico</li>
+                                <li>Teclado e toque</li>
+                                <li>Recorde salvo</li>
+                            </ul>
+                            <span class="jogar">Jogar</span>
+                        </div>
+                    </a>
+                </li>
+
+                <!-- ===== JOGO: TETRIS ===== -->
+                <li>
+                    <a class="jogo" href="jogos/tetris/">
+                        <svg class="miniatura" viewBox="0 0 160 100" aria-hidden="true" focusable="false">
+                            <rect width="160" height="100" fill="#1f2d3d"/>
+                            <rect x="70.5" y="10.5" width="9" height="9" rx="1.5" fill="#a855f7"/>
+                            <rect x="60.5" y="20.5" width="9" height="9" rx="1.5" fill="#a855f7"/>
+                            <rect x="70.5" y="20.5" width="9" height="9" rx="1.5" fill="#a855f7"/>
+                            <rect x="80.5" y="20.5" width="9" height="9" rx="1.5" fill="#a855f7"/>
+                            <rect x="0.5" y="60.5" width="9" height="9" rx="1.5" fill="#f59e0b"/>
+                            <rect x="120.5" y="60.5" width="9" height="9" rx="1.5" fill="#ef4444"/>
+                            <rect x="0.5" y="70.5" width="9" height="9" rx="1.5" fill="#f59e0b"/>
+                            <rect x="10.5" y="70.5" width="9" height="9" rx="1.5" fill="#f59e0b"/>
+                            <rect x="30.5" y="70.5" width="9" height="9" rx="1.5" fill="#facc15"/>
+                            <rect x="40.5" y="70.5" width="9" height="9" rx="1.5" fill="#facc15"/>
+                            <rect x="70.5" y="70.5" width="9" height="9" rx="1.5" fill="#22c55e"/>
+                            <rect x="110.5" y="70.5" width="9" height="9" rx="1.5" fill="#ef4444"/>
+                            <rect x="120.5" y="70.5" width="9" height="9" rx="1.5" fill="#ef4444"/>
+                            <rect x="140.5" y="70.5" width="9" height="9" rx="1.5" fill="#3b82f6"/>
+                            <rect x="0.5" y="80.5" width="9" height="9" rx="1.5" fill="#f59e0b"/>
+                            <rect x="10.5" y="80.5" width="9" height="9" rx="1.5" fill="#f59e0b"/>
+                            <rect x="20.5" y="80.5" width="9" height="9" rx="1.5" fill="#a855f7"/>
+                            <rect x="30.5" y="80.5" width="9" height="9" rx="1.5" fill="#facc15"/>
+                            <rect x="40.5" y="80.5" width="9" height="9" rx="1.5" fill="#facc15"/>
+                            <rect x="50.5" y="80.5" width="9" height="9" rx="1.5" fill="#22d3ee"/>
+                            <rect x="60.5" y="80.5" width="9" height="9" rx="1.5" fill="#22d3ee"/>
+                            <rect x="70.5" y="80.5" width="9" height="9" rx="1.5" fill="#22c55e"/>
+                            <rect x="80.5" y="80.5" width="9" height="9" rx="1.5" fill="#22c55e"/>
+                            <rect x="100.5" y="80.5" width="9" height="9" rx="1.5" fill="#ef4444"/>
+                            <rect x="110.5" y="80.5" width="9" height="9" rx="1.5" fill="#ef4444"/>
+                            <rect x="120.5" y="80.5" width="9" height="9" rx="1.5" fill="#22d3ee"/>
+                            <rect x="130.5" y="80.5" width="9" height="9" rx="1.5" fill="#3b82f6"/>
+                            <rect x="140.5" y="80.5" width="9" height="9" rx="1.5" fill="#3b82f6"/>
+                            <rect x="150.5" y="80.5" width="9" height="9" rx="1.5" fill="#3b82f6"/>
+                            <rect x="0.5" y="90.5" width="9" height="9" rx="1.5" fill="#ef4444"/>
+                            <rect x="10.5" y="90.5" width="9" height="9" rx="1.5" fill="#f59e0b"/>
+                            <rect x="20.5" y="90.5" width="9" height="9" rx="1.5" fill="#a855f7"/>
+                            <rect x="30.5" y="90.5" width="9" height="9" rx="1.5" fill="#a855f7"/>
+                            <rect x="40.5" y="90.5" width="9" height="9" rx="1.5" fill="#facc15"/>
+                            <rect x="50.5" y="90.5" width="9" height="9" rx="1.5" fill="#22d3ee"/>
+                            <rect x="60.5" y="90.5" width="9" height="9" rx="1.5" fill="#22d3ee"/>
+                            <rect x="70.5" y="90.5" width="9" height="9" rx="1.5" fill="#22c55e"/>
+                            <rect x="80.5" y="90.5" width="9" height="9" rx="1.5" fill="#22c55e"/>
+                            <rect x="90.5" y="90.5" width="9" height="9" rx="1.5" fill="#ef4444"/>
+                            <rect x="100.5" y="90.5" width="9" height="9" rx="1.5" fill="#ef4444"/>
+                            <rect x="110.5" y="90.5" width="9" height="9" rx="1.5" fill="#ef4444"/>
+                            <rect x="120.5" y="90.5" width="9" height="9" rx="1.5" fill="#22d3ee"/>
+                            <rect x="130.5" y="90.5" width="9" height="9" rx="1.5" fill="#3b82f6"/>
+                            <rect x="140.5" y="90.5" width="9" height="9" rx="1.5" fill="#3b82f6"/>
+                            <rect x="150.5" y="90.5" width="9" height="9" rx="1.5" fill="#3b82f6"/>
+                        </svg>
+
+                        <div class="jogo-corpo">
+                            <h3>Tetris</h3>
+                            <p>Encaixe as peças que caem e complete linhas para eliminá-las. Tem níveis, combos, peça fantasma, guardar peça e três dificuldades.</p>
+                            <ul class="etiquetas">
+                                <li>Clássico</li>
+                                <li>Teclado e toque</li>
+                                <li>Recorde salvo</li>
+                            </ul>
+                            <span class="jogar">Jogar</span>
+                        </div>
+                    </a>
+                </li>
+
+                <!-- ===== JOGO: CORRIDA DE MOTOS ===== -->
+                <li>
+                    <a class="jogo" href="jogos/motos/">
+                        <svg class="miniatura" viewBox="0 0 160 100" aria-hidden="true" focusable="false">
+                            <defs>
+                                <linearGradient id="ceuMotos" x1="0" y1="0" x2="0" y2="1">
+                                    <stop offset="0" stop-color="#0d1678"/>
+                                    <stop offset="1" stop-color="#3f66e8"/>
+                                </linearGradient>
+                            </defs>
+                            <rect width="160" height="46" fill="url(#ceuMotos)"/>
+                                                        <rect x="0" y="24" width="18" height="22" fill="#0b0f4a"/>
+                            <rect x="2" y="27" width="2" height="2" fill="#ffd84a"/>
+                            <rect x="10" y="27" width="2" height="2" fill="#ffd84a"/>
+                            <rect x="2" y="32" width="2" height="2" fill="#ffd84a"/>
+                            <rect x="10" y="32" width="2" height="2" fill="#ffd84a"/>
+                            <rect x="2" y="37" width="2" height="2" fill="#ffd84a"/>
+                            <rect x="10" y="37" width="2" height="2" fill="#ffd84a"/>
+                            <rect x="2" y="42" width="2" height="2" fill="#ffd84a"/>
+                            <rect x="10" y="42" width="2" height="2" fill="#ffd84a"/>
+                            <rect x="18" y="16" width="14" height="30" fill="#0b0f4a"/>
+                            <rect x="24" y="19" width="2" height="2" fill="#ffd84a"/>
+                            <rect x="24" y="24" width="2" height="2" fill="#ffd84a"/>
+                            <rect x="24" y="29" width="2" height="2" fill="#ffd84a"/>
+                            <rect x="24" y="34" width="2" height="2" fill="#ffd84a"/>
+                            <rect x="24" y="39" width="2" height="2" fill="#ffd84a"/>
+                            <rect x="32" y="28" width="16" height="18" fill="#0b0f4a"/>
+                            <rect x="34" y="31" width="2" height="2" fill="#ffd84a"/>
+                            <rect x="34" y="36" width="2" height="2" fill="#ffd84a"/>
+                            <rect x="34" y="41" width="2" height="2" fill="#ffd84a"/>
+                            <rect x="48" y="20" width="12" height="26" fill="#0b0f4a"/>
+                            <rect x="60" y="30" width="14" height="16" fill="#0b0f4a"/>
+                            <rect x="66" y="33" width="2" height="2" fill="#ffd84a"/>
+                            <rect x="66" y="38" width="2" height="2" fill="#ffd84a"/>
+                            <rect x="74" y="22" width="10" height="24" fill="#0b0f4a"/>
+                            <rect x="80" y="25" width="2" height="2" fill="#ffd84a"/>
+                            <rect x="80" y="30" width="2" height="2" fill="#ffd84a"/>
+                            <rect x="80" y="35" width="2" height="2" fill="#ffd84a"/>
+                            <rect x="80" y="40" width="2" height="2" fill="#ffd84a"/>
+                            <rect x="84" y="28" width="14" height="18" fill="#0b0f4a"/>
+                            <rect x="86" y="31" width="2" height="2" fill="#ffd84a"/>
+                            <rect x="94" y="31" width="2" height="2" fill="#ffd84a"/>
+                            <rect x="86" y="36" width="2" height="2" fill="#ffd84a"/>
+                            <rect x="94" y="36" width="2" height="2" fill="#ffd84a"/>
+                            <rect x="86" y="41" width="2" height="2" fill="#ffd84a"/>
+                            <rect x="94" y="41" width="2" height="2" fill="#ffd84a"/>
+                            <rect x="98" y="16" width="12" height="30" fill="#0b0f4a"/>
+                            <rect x="104" y="19" width="2" height="2" fill="#ffd84a"/>
+                            <rect x="104" y="24" width="2" height="2" fill="#ffd84a"/>
+                            <rect x="104" y="29" width="2" height="2" fill="#ffd84a"/>
+                            <rect x="104" y="34" width="2" height="2" fill="#ffd84a"/>
+                            <rect x="104" y="39" width="2" height="2" fill="#ffd84a"/>
+                            <rect x="110" y="26" width="16" height="20" fill="#0b0f4a"/>
+                            <rect x="112" y="29" width="2" height="2" fill="#ffd84a"/>
+                            <rect x="112" y="34" width="2" height="2" fill="#ffd84a"/>
+                            <rect x="112" y="39" width="2" height="2" fill="#ffd84a"/>
+                            <rect x="126" y="18" width="14" height="28" fill="#0b0f4a"/>
+                            <rect x="136" y="21" width="2" height="2" fill="#ffd84a"/>
+                            <rect x="136" y="26" width="2" height="2" fill="#ffd84a"/>
+                            <rect x="136" y="31" width="2" height="2" fill="#ffd84a"/>
+                            <rect x="136" y="36" width="2" height="2" fill="#ffd84a"/>
+                            <rect x="136" y="41" width="2" height="2" fill="#ffd84a"/>
+                            <rect x="140" y="30" width="20" height="16" fill="#0b0f4a"/>
+                            <rect x="146" y="33" width="2" height="2" fill="#ffd84a"/>
+                            <rect x="146" y="38" width="2" height="2" fill="#ffd84a"/>
+                                                        <rect x="0" y="46" width="160" height="54" fill="#1b21b0"/>
+                            <polygon points="80.0,46 80.0,46 76.8,49 76.2,49" fill="#d62839"/>
+                            <polygon points="80.0,46 80.0,46 83.8,49 83.2,49" fill="#d62839"/>
+                            <polygon points="80.0,46 80.0,46 83.2,49 76.8,49" fill="#7d7d89"/>
+                            <polygon points="79.8,46 80.2,46 79.1,49 78.8,49" fill="#f4f4f4"/>
+                            <polygon points="79.8,46 80.2,46 81.2,49 80.9,49" fill="#f4f4f4"/>
+                            <polygon points="76.2,49 76.8,49 73.0,52.5 71.9,52.5" fill="#ececec"/>
+                            <polygon points="83.2,49 83.8,49 88.1,52.5 87.0,52.5" fill="#ececec"/>
+                            <polygon points="76.8,49 83.2,49 87.0,52.5 73.0,52.5" fill="#7d7d89"/>
+                            <polygon points="71.9,52.5 73.0,52.5 68.2,57 66.2,57" fill="#d62839"/>
+                            <polygon points="87.0,52.5 88.1,52.5 93.8,57 91.8,57" fill="#d62839"/>
+                            <polygon points="73.0,52.5 87.0,52.5 91.8,57 68.2,57" fill="#7d7d89"/>
+                            <polygon points="77.5,52.5 77.9,52.5 76.4,57 75.7,57" fill="#f4f4f4"/>
+                            <polygon points="82.1,52.5 82.5,52.5 84.3,57 83.6,57" fill="#f4f4f4"/>
+                            <polygon points="66.2,57 68.2,57 61.7,63 58.7,63" fill="#ececec"/>
+                            <polygon points="91.8,57 93.8,57 101.3,63 98.3,63" fill="#ececec"/>
+                            <polygon points="68.2,57 91.8,57 98.3,63 61.7,63" fill="#7d7d89"/>
+                            <polygon points="58.7,63 61.7,63 53.1,71 48.7,71" fill="#d62839"/>
+                            <polygon points="98.3,63 101.3,63 111.3,71 106.9,71" fill="#d62839"/>
+                            <polygon points="61.7,63 98.3,63 106.9,71 53.1,71" fill="#7d7d89"/>
+                            <polygon points="73.3,63 74.5,63 71.9,71 70.2,71" fill="#f4f4f4"/>
+                            <polygon points="85.5,63 86.7,63 89.8,71 88.1,71" fill="#f4f4f4"/>
+                            <polygon points="48.7,71 53.1,71 41.3,82 34.9,82" fill="#ececec"/>
+                            <polygon points="106.9,71 111.3,71 125.1,82 118.7,82" fill="#ececec"/>
+                            <polygon points="53.1,71 106.9,71 118.7,82 41.3,82" fill="#7d7d89"/>
+                            <polygon points="34.9,82 41.3,82 22.0,100 12.3,100" fill="#d62839"/>
+                            <polygon points="118.7,82 125.1,82 147.7,100 138.0,100" fill="#d62839"/>
+                            <polygon points="41.3,82 118.7,82 138.0,100 22.0,100" fill="#7d7d89"/>
+                            <polygon points="65.9,82 68.3,82 62.5,100 58.9,100" fill="#f4f4f4"/>
+                            <polygon points="91.7,82 94.1,82 101.1,100 97.5,100" fill="#f4f4f4"/>
+                            <rect x="29.2" y="36" width="1.6" height="24" fill="#2b3170"/>
+                            <rect x="30" y="36" width="8" height="1.4" fill="#2b3170"/>
+                            <rect x="35" y="37" width="6" height="1.6" fill="#fff6b0"/>
+                            <rect x="125.2" y="36" width="1.6" height="24" fill="#2b3170"/>
+                            <rect x="118" y="36" width="8" height="1.4" fill="#2b3170"/>
+                            <rect x="115" y="37" width="6" height="1.6" fill="#fff6b0"/>
+                            <rect x="51.2" y="40" width="1.6" height="12" fill="#2b3170"/>
+                            <rect x="52" y="40" width="8" height="1.4" fill="#2b3170"/>
+                            <rect x="57" y="41" width="6" height="1.6" fill="#fff6b0"/>
+                            <rect x="107.2" y="40" width="1.6" height="12" fill="#2b3170"/>
+                            <rect x="100" y="40" width="8" height="1.4" fill="#2b3170"/>
+                            <rect x="97" y="41" width="6" height="1.6" fill="#fff6b0"/>
+                            
+<ellipse cx="80" cy="96" rx="10" ry="1.8" fill="rgba(0,0,0,0.35)"/>
+<rect x="77.8" y="85" width="4.4" height="11" fill="#141414"/>
+<polygon points="73.5,87 86.5,87 85,80 75,80" fill="#e63946"/>
+<rect x="72" y="77" width="3.4" height="9" fill="#26264a"/>
+<rect x="84.6" y="77" width="3.4" height="9" fill="#26264a"/>
+<polygon points="72.8,77 87.2,77 86.4,66 73.6,66" fill="#f4f4f4"/>
+<rect x="72.8" y="71" width="14.4" height="1.8" fill="#e63946"/>
+<polyline points="74,67.5 69.5,71.5 70.8,77" fill="none" stroke="#f4f4f4" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+<polyline points="86,67.5 90.5,71.5 89.2,77" fill="none" stroke="#f4f4f4" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+<circle cx="80" cy="62.5" r="4.2" fill="#ffd23f"/>
+<rect x="79.1" y="58" width="1.8" height="9" fill="#e63946"/>
+
+                        </svg>
+
+                        <div class="jogo-corpo">
+                            <h3>Corrida de Motos</h3>
+                            <p>Pilote numa pista noturna em pseudo-3D. Ultrapasse os rivais, use o turbo e termine as voltas antes que o tempo acabe.</p>
+                            <ul class="etiquetas">
+                                <li>Corrida</li>
+                                <li>Teclado e toque</li>
+                                <li>Recorde salvo</li>
+                            </ul>
+                            <span class="jogar">Jogar</span>
+                        </div>
+                    </a>
+                </li>
+                
+
+                <!-- ===== PRÓXIMO JOGO (reservado) =====
+                     Para publicar um novo jogo:
+                     1. crie a pasta jogos/nome-do-jogo/ com o index.html dele;
+                     2. copie o bloco <li> do jogo acima e troque título, texto e o href;
+                     3. apague este bloco de "Em breve" quando não precisar mais dele. -->
+                <li>
+                    <div class="jogo em-breve" aria-disabled="true">
+                        <div class="miniatura vazia" aria-hidden="true">?</div>
+                        <div class="jogo-corpo">
+                            <h3>Próximo jogo</h3>
+                            <p>Um novo jogo está a caminho. Volte em breve.</p>
+                            <span class="jogar">Em breve</span>
+                        </div>
+                    </div>
+                </li>
+
+            </ul>
+        </main>
+
+        <footer class="rodape">
+            <p>
+                Código-fonte no
+                <a href="https://github.com/SEU-USUARIO/SEU-REPOSITORIO">GitHub</a>
+            </p>
+        </footer>
+
+    </body>
 </html>
